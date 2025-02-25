@@ -44,9 +44,9 @@
                             </div>
                         </div>
                         <div class="list-item-btns">
-                            <button type="button" class="delet-item p-1rem fs-1-25rem">&minus;</button>
-                            <span class="item-on-cart p-1rem fs-1-25rem">1</span>
-                            <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
+                            <button type="button" class="delet-item p-1rem fs-1-25rem" onclick="delItem()">&minus;</button>
+                            <span class="item-on-cart p-1rem fs-1-25rem" id="itemOnCart-1">1</span>
+                            <button type="button" class="add-item p-1rem fs-1-25rem" onclick="addItem()">&plus;</button>
                         </div>
                         <div class="list-item-price">
                             <p><span class="final-price fs-1-25rem">221</span> Tk.</p>
@@ -203,6 +203,6 @@
             <!-- end of summery panel section  -->
          </section>
         <!-- end of purchase section  -->
-        
+        <script src="./script.js"></script>
     </body>
 </html>
