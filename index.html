@@ -25,7 +25,7 @@
                 </div>
                 <div class="book-list">
                     <div class="list-item p-1rem border-bottom-solid d-flex space-between align-center">
-                        <div class="list-item-details d-flex gap-1rem">
+                        <div class="list-item-details w-60 d-flex gap-1rem">
                             <input type="checkbox" name="item-selector" class="item-selector" id="#">
                             <div class="item-img w-5rem">
                                 <img src="./assets/sepiens.jpg" alt="Sepiens - A Brief History of Humankind" class="w-100">
@@ -43,18 +43,18 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="list-item-btns">
-                            <button type="button" class="delet-item p-1rem fs-1-25rem" onclick="delItem()">&minus;</button>
+                        <div class="list-item-btns w-30">
+                            <button type="button" class="delet-item p-1rem fs-1-25rem" onclick="delItem('itemOnCart-1', 0)">&minus;</button>
                             <span class="item-on-cart p-1rem fs-1-25rem" id="itemOnCart-1">1</span>
-                            <button type="button" class="add-item p-1rem fs-1-25rem" onclick="addItem()">&plus;</button>
+                            <button type="button" class="add-item p-1rem fs-1-25rem" onclick="addItem('itemOnCart-1', 0)">&plus;</button>
                         </div>
-                        <div class="list-item-price">
-                            <p><span class="final-price fs-1-25rem">221</span> Tk.</p>
-                            <p><s class="color-red"><span class="base-price fs-1-125rem">450</span> Tk.</s></p>
+                        <div class="list-item-price w-10">
+                            <p><span class="final-price fs-1-25rem" id="final-price-1">80</span> Tk.</p>
+                            <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price-1">100</span> Tk.</s></p>
                         </div>
                     </div>
                     <div class="list-item p-1rem border-bottom-solid d-flex space-between align-center">
-                        <div class="list-item-details d-flex gap-1rem">
+                        <div class="list-item-details w-60 d-flex gap-1rem">
                             <input type="checkbox" name="item-selector" class="item-selector" id="#">
                             <div class="item-img w-5rem">
                                 <img src="./assets/homo-deus.jpg" alt="Homo Deus - A Brief History of Tomorrow" class="w-100">
@@ -72,18 +72,18 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="list-item-btns">
-                            <button type="button" class="delet-item p-1rem fs-1-25rem">&minus;</button>
-                            <span class="item-on-cart p-1rem fs-1-25rem">1</span>
-                            <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
+                        <div class="list-item-btns w-30">
+                            <button type="button" class="delet-item p-1rem fs-1-25rem" onclick="delItem('itemOnCart-2', 1)">&minus;</button>
+                            <span class="item-on-cart p-1rem fs-1-25rem" id="itemOnCart-2">1</span>
+                            <button type="button" class="add-item p-1rem fs-1-25rem" onclick="addItem('itemOnCart-2', 1)">&plus;</button>
                         </div>
-                        <div class="list-item-price">
-                            <p><span class="final-price fs-1-25rem">221</span> Tk.</p>
-                            <p><s class="color-red"><span class="base-price fs-1-125rem">450</span> Tk.</s></p>
+                        <div class="list-item-price w-10">
+                            <p><span class="final-price fs-1-25rem" id="final-price-2">130</span> Tk.</p>
+                            <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price-2">150</span> Tk.</s></p>
                         </div>
                     </div>
                     <div class="list-item p-1rem border-bottom-solid d-flex space-between align-center">
-                        <div class="list-item-details d-flex gap-1rem">
+                        <div class="list-item-details w-60 d-flex gap-1rem">
                             <input type="checkbox" name="item-selector" class="item-selector" id="#">
                             <div class="item-img w-5rem">
                                 <img src="./assets/the-shinning.jpg" alt="The Shinning" class="w-100">
@@ -101,18 +101,18 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="list-item-btns">
-                            <button type="button" class="delet-item p-1rem fs-1-25rem">&minus;</button>
-                            <span class="item-on-cart p-1rem fs-1-25rem">1</span>
-                            <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
+                        <div class="list-item-btns w-30">
+                            <button type="button" class="delet-item p-1rem fs-1-25rem" onclick="delItem('itemOnCart-3', 2)">&minus;</button>
+                            <span class="item-on-cart p-1rem fs-1-25rem" id="itemOnCart-3">1</span>
+                            <button type="button" class="add-item p-1rem fs-1-25rem" onclick="addItem('itemOnCart-3', 2)">&plus;</button>
                         </div>
-                        <div class="list-item-price">
-                            <p><span class="final-price fs-1-25rem">221</span> Tk.</p>
-                            <p><s class="color-red"><span class="base-price fs-1-125rem">450</span> Tk.</s></p>
+                        <div class="list-item-price w-10">
+                            <p><span class="final-price fs-1-25rem" id="final-price-3">180</span> Tk.</p>
+                            <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price-3">200</span> Tk.</s></p>
                         </div>
                     </div>
                     <div class="list-item p-1rem border-bottom-solid d-flex space-between align-center">
-                        <div class="list-item-details d-flex gap-1rem">
+                        <div class="list-item-details w-60 d-flex gap-1rem">
                             <input type="checkbox" name="item-selector" class="item-selector" id="#">
                             <div class="item-img w-5rem">
                                 <img src="./assets/1984.jpg" alt="1984" class="w-100">
@@ -130,18 +130,18 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="list-item-btns">
-                            <button type="button" class="delet-item p-1rem fs-1-25rem">&minus;</button>
-                            <span class="item-on-cart p-1rem fs-1-25rem">1</span>
-                            <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
+                        <div class="list-item-btns w-30">
+                            <button type="button" class="delet-item p-1rem fs-1-25rem" onclick="delItem('itemOnCart-4', 3)">&minus;</button>
+                            <span class="item-on-cart p-1rem fs-1-25rem" id="itemOnCart-4">1</span>
+                            <button type="button" class="add-item p-1rem fs-1-25rem" onclick="addItem('itemOnCart-4', 3)">&plus;</button>
                         </div>
-                        <div class="list-item-price">
-                            <p><span class="final-price fs-1-25rem">221</span> Tk.</p>
-                            <p><s class="color-red"><span class="base-price fs-1-125rem">450</span> Tk.</s></p>
+                        <div class="list-item-price w-10">
+                            <p><span class="final-price fs-1-25rem" id="final-price-4">230</span> Tk.</p>
+                            <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price-4">250</span> Tk.</s></p>
                         </div>
                     </div>
                     <div class="list-item p-1rem border-bottom-solid d-flex space-between align-center">
-                        <div class="list-item-details d-flex gap-1rem">
+                        <div class="list-item-details w-60 d-flex gap-1rem">
                             <input type="checkbox" name="item-selector" class="item-selector" id="#">
                             <div class="item-img w-5rem">
                                 <img src="./assets/da-vinci-code.jpg" alt="The Da Vinci Code" class="w-100">
@@ -159,14 +159,14 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="list-item-btns">
-                            <button type="button" class="delet-item p-1rem fs-1-25rem">&minus;</button>
-                            <span class="item-on-cart p-1rem fs-1-25rem">1</span>
-                            <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
+                        <div class="list-item-btns w-30">
+                            <button type="button" class="delet-item p-1rem fs-1-25rem" onclick="delItem('itemOnCart-5', 4)">&minus;</button>
+                            <span class="item-on-cart p-1rem fs-1-25rem" id="itemOnCart-5">1</span>
+                            <button type="button" class="add-item p-1rem fs-1-25rem" onclick="addItem('itemOnCart-5', 4)">&plus;</button>
                         </div>
-                        <div class="list-item-price">
-                            <p><span class="final-price fs-1-25rem">221</span> Tk.</p>
-                            <p><s class="color-red"><span class="base-price fs-1-125rem">450</span> Tk.</s></p>
+                        <div class="list-item-price w-10">
+                            <p><span class="final-price fs-1-25rem" id="final-price-5">280</span> Tk.</p>
+                            <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price-5">300</span> Tk.</s></p>
                         </div>
                     </div>
                 </div>
