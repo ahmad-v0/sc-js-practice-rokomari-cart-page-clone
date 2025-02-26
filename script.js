@@ -79,10 +79,12 @@
 //     }
 // }
 
+// an array to store each book item as object, containing base price and final price along with respectice id
+
 bookshop = [
     {
-        finalPriceId: "final-price-1",
-        finalPrice: 80,
+        finalPriceId: "final-price-1", 
+        finalPrice: 80,                 // final price and base price should be dynamic, but for now static values are being used (for practice)
         basePriceId: "base-price-1",
         basePrice: 100
     }, {
@@ -108,24 +110,34 @@ bookshop = [
     }
 ]
 
+// console.log(document.getElementsByClassName("final-price"))
 
-function addItem (itemOnCart, bookShopIndex) {
-var item = Number(document.getElementById(itemOnCart).innerText);
-var bookshopItem = bookshop[bookShopIndex];
-if (item < 5) {
+
+// a function that adds item to the cart whenever add button is clicked, and also calculate and show the total final and total base price of that item
+function addItem (itemOnCart, bookShopIndex) {                      // functionName (elementId, indexPosition)
+var item = Number(document.getElementById(itemOnCart).innerText);   // convert the text of itemOnCart into number
+var bookshopItem = bookshop[bookShopIndex];                         // map the object inside array
+if (item < 5) {                                                     // checks whether number of item on the cart does exceed 5 items
     item++;
-    document.getElementById(itemOnCart).innerText = item;
-    document.getElementById(bookshopItem.finalPriceId).innerText = item * (bookshopItem.finalPrice);
-    document.getElementById(bookshopItem.basePriceId).innerText = item * (bookshopItem.basePrice);
+    document.getElementById(itemOnCart).innerText = item;           // update the value of item on the cart
+    document.getElementById(bookshopItem.finalPriceId).innerText = item * (bookshopItem.finalPrice);    // updates the total final price of the selected item
+    document.getElementById(bookshopItem.basePriceId).innerText = item * (bookshopItem.basePrice);      // updates the total base price of the selected item
+
+    // for (index=0; index < 5; index++) {                          // an attempt to calculate total price of all the item on the cart, but aborted (requires more analysis)
+    //     itemToCount = bookshop[index];
+
+    // }
 } else {
-    console.log("Max 5 items can be purchased with this deal.");
+    console.log("Max 5 items can be purchased with this deal.");    // error message to check, will be commented and replaced with a notice
 }
 }
 
-function delItem (itemOnCart, bookShopIndex) {
+
+// a function that deletes item from the cart whenever delete button is clicked, and also calculate and show the total final and total base price of that item
+function delItem (itemOnCart, bookShopIndex) {                      // all are nearly simillar to the addItem function
 var item = Number(document.getElementById(itemOnCart).innerText);
 var bookshopItem = bookshop[bookShopIndex];
-if (item >= 2) {
+if (item >= 2) {                                                    // to check that minimum 1 items remains on the cart
     item--;
     document.getElementById(itemOnCart).innerText = item;
     document.getElementById(bookshopItem.finalPriceId).innerText = item * (bookshopItem.finalPrice);
