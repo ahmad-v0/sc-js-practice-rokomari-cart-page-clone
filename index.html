@@ -19,8 +19,8 @@
                     </div>
                     <p>
                         Your Total: 
-                        <s class="color-red  fs-1-25rem"><span id="purchase-total-base">3187</span> Tk</s>
-                        <span id="purchase-total-final" class="color-green">3187 Tk.</span>
+                        <s class="color-red  fs-1-25rem"><span id="purchase-total-base">0 Tk</span></s>
+                        <span id="purchase-total-final" class="color-green">0 Tk.</span>
                     </p>
                 </div>
                 <div class="book-list">
@@ -169,6 +169,35 @@
                             <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price-4"></span> Tk.</s></p>
                         </div>
                     </div>
+                    <div class="list-item p-1rem border-bottom-solid d-flex space-between align-center">
+                        <div class="list-item-details w-60 d-flex gap-1rem">
+                            <input type="checkbox" name="item-selector" class="item-selector" id="#">
+                            <div class="item-img w-5rem">
+                                <img src="./assets/da-vinci-code.jpg" alt="The Da Vinci Code" class="w-100">
+                            </div>
+                            <div class="item-txt d-flex flex-column space-between">
+                                <p class="item-title fs-1-25rem" id="itemTitle5">
+                                    
+                                </p>
+                                <p class="item-author fs-1-125rem" id="authorName5">
+                                    
+                                </p>
+                                <img src="./assets/trash-solid.svg" alt="Remove from Cart" class="item-discard w-1rem">
+                                <p class="copies-available color-red">
+                                    Only <span class="copies-available-number" id="copiesAvailable5"></span> copies available
+                                </p>
+                            </div>
+                        </div>
+                        <div class="list-item-btns w-30">
+                            <button type="button" class="delet-item p-1rem fs-1-25rem" onclick="delItem('itemOnCart-6', 5)">&minus;</button>
+                            <span class="item-on-cart p-1rem fs-1-25rem" id="itemOnCart-6">1</span>
+                            <button type="button" class="add-item p-1rem fs-1-25rem" onclick="addItem('itemOnCart-6', 5)">&plus;</button>
+                        </div>
+                        <div class="list-item-price w-10">
+                            <p><span class="final-price fs-1-25rem" id="final-price-5"></span> Tk.</p>
+                            <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price-5"></span> Tk.</s></p>
+                        </div>
+                    </div>
                 </div>
              </div>
             <!-- end of selection panel section  -->
@@ -180,19 +209,19 @@
                     </p>
                     <p class="fs-1-25rem pb-1rem d-flex space-between border-bottom-dashed">
                         Subtotal
-                        <span id="subtotal">1099 Tk.</span>
+                        <span id="subtotal">0 Tk.</span>
                     </p>
                     <p class="fs-1-25rem pb-1rem d-flex space-between border-bottom-dashed">
                         Online Fee 
-                        <span id="online-fee">65 TK.</span>
+                        <span id="online-fee">0 Tk.</span>
                     </p>
                     <p class="fs-1-25rem pb-1rem d-flex space-between border-bottom-dashed">
                         Total 
-                        <span id="total">1164 Tk.</span>
+                        <span id="total">0 Tk.</span>
                     </p>
                     <p class="fs-1-25rem mb-1rem pb-1rem d-flex space-between border-bottom-dashed">
                         Payable Total 
-                        <span id="payable-total">1164 Tk.</span>
+                        <span id="payable-total">0 TK.</span>
                     </p>
                 </div>
                 <div class="button-section d-flex flex-column gap-1rem">
