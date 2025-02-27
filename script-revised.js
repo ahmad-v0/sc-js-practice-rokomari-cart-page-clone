@@ -46,7 +46,7 @@ bookshop = [
         basePriceId: "base-price-4" 
     }
 ]
-// console.log("This is an automatically generated message");
+console.log("This is an automatically generated message");
 // a anonymous function, which is called automatically whenever the page loads and updates the values in html accordingly
 (function () {
     // console.log("This is an automatically generated message");
