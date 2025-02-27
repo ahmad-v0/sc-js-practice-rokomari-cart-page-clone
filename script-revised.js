@@ -1,5 +1,5 @@
 // databse of books stored as object in a array
-bookshop = [
+var bookshop = [
     {
         bookTitle : "Sepiens - A Brief History of Humankind ",
         authorName: "Yuval Noah Harari",
@@ -46,20 +46,22 @@ bookshop = [
         basePriceId: "base-price-4" 
     }
 ]
-console.log("This is an automatically generated message");
-// a anonymous function, which is called automatically whenever the page loads and updates the values in html accordingly
-(function () {
-    // console.log("This is an automatically generated message");
-    for (index = 0; index < 5; index++) {                                                               // function loops for five times, as there are five objects in the array
-        var bookshopItem = bookshop[index];                                                             // assign the index to array items
-        document.getElementById(`itemTitle${index}`).innerText = bookshopItem.bookTitle;                // updates book title on html
-        document.getElementById(`authorName${index}`).innerText = bookshopItem.authorName;              // updates author name on html
-        document.getElementById(`copiesAvailable${index}`).innerText = bookshopItem.copiesAvailable;    // updates the number of copies available on html
-        document.getElementById(`final-price-${index}`).innerText = bookshopItem.finalPrice;            // updates the final price of the item on html
-        document.getElementById(`base-price-${index}`).innerText = bookshopItem.basePrice;              // updates the base price of the item on html
-    }
-})();
+// console.log("This is an automatically generated message");
 
+document.addEventListener("DOMContentLoaded", function () {                                                 // an event listner, that ensures that the following function runs only after the html is loaded
+    // a anonymous function, which is called automatically whenever the page loads and updates the values in html accordingly
+    (function () {
+        // console.log("This is an automatically generated message");
+        for (var index = 0; index < 5; index++) {                                                           // function loops for five times, as there are five objects in the array
+            var bookshopItem = bookshop[index];                                                             // assign the index to array items
+            document.getElementById(`itemTitle${index}`).innerText = bookshopItem.bookTitle;                // updates book title on html
+            document.getElementById(`authorName${index}`).innerText = bookshopItem.authorName;              // updates author name on html
+            document.getElementById(`copiesAvailable${index}`).innerText = bookshopItem.copiesAvailable;    // updates the number of copies available on html
+            document.getElementById(`final-price-${index}`).innerText = bookshopItem.finalPrice;            // updates the final price of the item on html
+            document.getElementById(`base-price-${index}`).innerText = bookshopItem.basePrice;              // updates the base price of the item on html
+        }
+    })();
+});
 
 // a function that adds item to the cart whenever add button is clicked, and also calculate and show the total final and total base price of that item
 function addItem (itemOnCart, bookShopIndex) {                      // functionName (elementId, indexPosition)
