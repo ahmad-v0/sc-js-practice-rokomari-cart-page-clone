@@ -1,6 +1,7 @@
 // databse of books stored as object in a array
 var bookshop = [
     {
+        source: "./assets/sepiens.jpg",
         bookTitle : "Sepiens - A Brief History of Humankind ",
         authorName: "Yuval Noah Harari",
         copiesAvailable: 8,
@@ -10,6 +11,7 @@ var bookshop = [
         basePriceId: "base-price-0" 
     },
     {
+        source: "./assets/homo-deus.jpg",
         bookTitle : "Homo Deus - A Brief History of Tomorrow",
         authorName: "Yuval Noah Harari",
         copiesAvailable: 12,
@@ -19,6 +21,7 @@ var bookshop = [
         basePriceId: "base-price-1" 
     },
     {
+        source: "./assets/the-shinning.jpg",
         bookTitle : "The Shinning",
         authorName: "Stephen King",
         copiesAvailable: 8,
@@ -28,6 +31,7 @@ var bookshop = [
         basePriceId: "base-price-2" 
     },
     {
+        source: "./assets/1984.jpg",
         bookTitle : "1984",
         authorName: "George Orwell",
         copiesAvailable: 12,
@@ -36,7 +40,8 @@ var bookshop = [
         finalPriceId: "final-price-3",
         basePriceId: "base-price-3" 
     },
-    {
+    {   
+        source: "./assets/da-vinci-code.jpg",
         bookTitle : "The Da Vinci Code",
         authorName: "Dan Brown",
         copiesAvailable: 14,
@@ -46,6 +51,7 @@ var bookshop = [
         basePriceId: "base-price-4" 
     },
     {
+        source: "./assets/da-vinci-code.jpg",
         bookTitle : "Inferno",
         authorName: "Dan Brown",
         copiesAvailable: 5,
@@ -63,6 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {                     
         // console.log("This is an automatically generated message");
         for (var index = 0; index < bookshop.length; index++) {                                                           // function loops for five times, as there are five objects in the array
             var bookshopItem = bookshop[index];                                                             // assign the index to array items
+            document.getElementById(`item-source${index}`).src = bookshopItem.source;                       // updates source link of item image on html
+            document.getElementById(`item-source${index}`).alt = bookshopItem.bookTitle;                    // updates alternative text for the item on html
             document.getElementById(`itemTitle${index}`).innerText = bookshopItem.bookTitle;                // updates book title on html
             document.getElementById(`authorName${index}`).innerText = bookshopItem.authorName;              // updates author name on html
             document.getElementById(`copiesAvailable${index}`).innerText = bookshopItem.copiesAvailable;    // updates the number of copies available on html
