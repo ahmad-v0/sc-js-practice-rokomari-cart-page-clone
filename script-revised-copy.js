@@ -7,8 +7,8 @@ var bookshop = [
         copiesAvailable: 8,
         finalPrice: 80,
         basePrice: 100,
-        finalPriceId: "final-price-0",
-        basePriceId: "base-price-0" 
+        // finalPriceId: "final-price-0",
+        // basePriceId: "base-price-0" 
     },
     {
         source: "./assets/homo-deus.jpg",
@@ -17,8 +17,8 @@ var bookshop = [
         copiesAvailable: 12,
         finalPrice: 130,
         basePrice: 150,
-        finalPriceId: "final-price-1",
-        basePriceId: "base-price-1" 
+        // finalPriceId: "final-price-1",
+        // basePriceId: "base-price-1" 
     },
     {
         source: "./assets/the-shinning.jpg",
@@ -27,8 +27,8 @@ var bookshop = [
         copiesAvailable: 8,
         finalPrice: 180,
         basePrice: 200,
-        finalPriceId: "final-price-2",
-        basePriceId: "base-price-2" 
+        // finalPriceId: "final-price-2",
+        // basePriceId: "base-price-2" 
     },
     {
         source: "./assets/1984.jpg",
@@ -37,8 +37,8 @@ var bookshop = [
         copiesAvailable: 12,
         finalPrice: 230,
         basePrice: 250,
-        finalPriceId: "final-price-3",
-        basePriceId: "base-price-3" 
+        // finalPriceId: "final-price-3",
+        // basePriceId: "base-price-3" 
     },
     {   
         source: "./assets/da-vinci-code.jpg",
@@ -47,8 +47,8 @@ var bookshop = [
         copiesAvailable: 14,
         finalPrice: 280,
         basePrice: 300,
-        finalPriceId: "final-price-4",
-        basePriceId: "base-price-4" 
+        // finalPriceId: "final-price-4",
+        // basePriceId: "base-price-4" 
     },
     {
         source: "./assets/da-vinci-code.jpg",
@@ -57,28 +57,83 @@ var bookshop = [
         copiesAvailable: 5,
         finalPrice: 210,
         basePrice: 240,
-        finalPriceId: "final-price-5",
-        basePriceId: "base-price-5" 
+        // finalPriceId: "final-price-5",
+        // basePriceId: "base-price-5" 
+    },
+    {
+        source: "./assets/sepiens.jpg",
+        bookTitle : "Sepiens - A Brief History of Humankind ",
+        authorName: "Yuval Noah Harari",
+        copiesAvailable: 8,
+        finalPrice: 80,
+        basePrice: 100,
+        // finalPriceId: "final-price-0",
+        // basePriceId: "base-price-0" 
     }
 ]
 // console.log("This is an automatically generated message");
+var bookList = document.querySelector('.book-list');
 
-document.addEventListener("DOMContentLoaded", function () {                                                 // an event listner, that ensures that the following function runs only after the html is loaded
-    // a anonymous function, which is called automatically whenever the page loads and updates the values in html accordingly
-    (function () {
-        // console.log("This is an automatically generated message");
-        for (var index = 0; index < bookshop.length; index++) {                                             // function loops for five times, as there are five objects in the array
-            var bookshopItem = bookshop[index];                                                             // assign the index to array items
-            document.getElementById(`item-source${index}`).src = bookshopItem.source;                       // updates source link of item image on html
-            document.getElementById(`item-source${index}`).alt = bookshopItem.bookTitle;                    // updates alternative text for the item on html
-            document.getElementById(`itemTitle${index}`).innerText = bookshopItem.bookTitle;                // updates book title on html
-            document.getElementById(`authorName${index}`).innerText = bookshopItem.authorName;              // updates author name on html
-            document.getElementById(`copiesAvailable${index}`).innerText = bookshopItem.copiesAvailable;    // updates the number of copies available on html
-            document.getElementById(`final-price-${index}`).innerText = bookshopItem.finalPrice;            // updates the final price of the item on html
-            document.getElementById(`base-price-${index}`).innerText = bookshopItem.basePrice;              // updates the base price of the item on html
-        }
-    })();
+//an event listener that check the following function should run once the contents loaded
+document.addEventListener("DOMContentLoaded", function() {
+    for (i = 0; i < bookshop.length; i++) {
+        bookshopItem = bookshop[i];
+        loadItems(bookshopItem);
+        console.log('test');
+    }
+    console.log('test');
 });
+
+// a function to inject items on itemlist as per array, fetched from database
+function loadItems(item) {
+    var itemToLoad = document.createElement('div');
+    itemToLoad.className = "list-item p-1rem border-bottom-solid d-flex space-between align-center";
+    itemToLoad.innerHTML = `<div class="list-item-details w-60 d-flex gap-1rem">
+                                <input type="checkbox" name="item-selector" class="item-selector" id="item-selector${i}">
+                                <div class="item-img w-5rem">
+                                    <img src="${item.source}" alt="${item.bookTitle}" class="w-100" id="item-source${i}">
+                                </div>
+                                <div class="item-txt d-flex flex-column space-between">
+                                    <p class="item-title fs-1-25rem" id="item-title${i}">
+                                    ${item.bookTitle}
+                                    </p>
+                                    <p class="item-author fs-1-125rem" id="item-author${i}">
+                                    ${item.authorName}
+                                    </p>
+                                    <img src="./assets/trash-solid.svg" alt="Remove from Cart" class="item-discard w-1rem">
+                                    <p class="copies-available color-red">
+                                        Only <span class="copies-available-number" id="copies-availabe${i}">${item.copiesAvailable}</span> copies available
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="list-item-btns w-30">
+                                <button type="button" class="delet-item p-1rem fs-1-25rem">&minus;</button>
+                                <span class="item-on-cart p-1rem fs-1-25rem" id="item-on-cart${i}">1</span>
+                                <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
+                            </div>
+                            <div class="list-item-price w-10">
+                                <p><span class="final-price fs-1-25rem" id="final-price${i}">${item.finalPrice}</span> Tk.</p>
+                                <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price${i}">${item.basePrice}</span> Tk.</s></p>
+                            </div>`;
+    bookList.appendChild(itemToLoad);
+}
+
+var addItemBtns = document.querySelectorAll('.add-item')
+for (i = 0; i < addItemBtns.length; i++) {
+    addItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
+        var itemToBuy = Number(event.target.closest('.item-on-cart').innerText)     // targets the value of the colsest item-on-cart class    
+        if (itemToBuy > 5) {                                                        // checks if there is already 5 copies of that item on cart    
+            itemToBuy++;
+            event.target.closest('.item-on-cart').innerText = itemToBuy;
+            console.log("te4st");
+        }
+    })
+}
+ 
+
+function oneMoreItem (){                                                // A function that increase to number of item on cart by one
+
+}
 
 // a function that adds item to the cart whenever add button is clicked, and also calculate and show the total final and total base price of that item
 function addItem (itemOnCart, bookShopIndex) {                      // functionName (elementId, indexPosition)
