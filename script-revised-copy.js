@@ -6,9 +6,7 @@ var bookshop = [
         authorName: "Yuval Noah Harari",
         copiesAvailable: 8,
         finalPrice: 80,
-        basePrice: 100,
-        // finalPriceId: "final-price-0",
-        // basePriceId: "base-price-0" 
+        basePrice: 100
     },
     {
         source: "./assets/homo-deus.jpg",
@@ -16,9 +14,7 @@ var bookshop = [
         authorName: "Yuval Noah Harari",
         copiesAvailable: 12,
         finalPrice: 130,
-        basePrice: 150,
-        // finalPriceId: "final-price-1",
-        // basePriceId: "base-price-1" 
+        basePrice: 150
     },
     {
         source: "./assets/the-shinning.jpg",
@@ -26,9 +22,7 @@ var bookshop = [
         authorName: "Stephen King",
         copiesAvailable: 8,
         finalPrice: 180,
-        basePrice: 200,
-        // finalPriceId: "final-price-2",
-        // basePriceId: "base-price-2" 
+        basePrice: 200
     },
     {
         source: "./assets/1984.jpg",
@@ -36,9 +30,7 @@ var bookshop = [
         authorName: "George Orwell",
         copiesAvailable: 12,
         finalPrice: 230,
-        basePrice: 250,
-        // finalPriceId: "final-price-3",
-        // basePriceId: "base-price-3" 
+        basePrice: 250
     },
     {   
         source: "./assets/da-vinci-code.jpg",
@@ -46,9 +38,7 @@ var bookshop = [
         authorName: "Dan Brown",
         copiesAvailable: 14,
         finalPrice: 280,
-        basePrice: 300,
-        // finalPriceId: "final-price-4",
-        // basePriceId: "base-price-4" 
+        basePrice: 300
     },
     {
         source: "./assets/da-vinci-code.jpg",
@@ -56,9 +46,7 @@ var bookshop = [
         authorName: "Dan Brown",
         copiesAvailable: 5,
         finalPrice: 210,
-        basePrice: 240,
-        // finalPriceId: "final-price-5",
-        // basePriceId: "base-price-5" 
+        basePrice: 240
     },
     {
         source: "./assets/sepiens.jpg",
@@ -66,9 +54,7 @@ var bookshop = [
         authorName: "Yuval Noah Harari",
         copiesAvailable: 8,
         finalPrice: 80,
-        basePrice: 100,
-        // finalPriceId: "final-price-0",
-        // basePriceId: "base-price-0" 
+        basePrice: 100
     }
 ]
 // console.log("This is an automatically generated message");
@@ -122,6 +108,13 @@ loadCart();                                                                     
 
 var addItemBtns = document.querySelectorAll('.add-item');                           // returns nodelist of all add-item btns
 var delItemBtns = document.querySelectorAll('.del-item');                           // returns nodelist of all del-item btns
+var checkboxes = document.querySelectorAll('.item-selector');                       // returns nodelist of all checkboxes for items on cart
+var subtotalFinal = document.querySelector('#purchase-total-final');
+var subtotalBase = document.querySelector('#purchase-total-base');
+var subTotal = document.querySelector('#subtotal');
+var onlineFee = document.querySelector('#online-fee');
+var total = document.querySelector('#total');
+var payableTotal = document.querySelector('#payable-total');
 
 for (let i = 0; i < addItemBtns.length; i++) {
     addItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
@@ -130,6 +123,9 @@ for (let i = 0; i < addItemBtns.length; i++) {
             itemToBuy++;                                                             // increase the number of item by one
             event.target.previousElementSibling.innerText = itemToBuy;               // show the number of item
             unitPriceCal(event, i, itemToBuy);                                       // calculate total price of added units of that item
+            if (event.target.parentNode.parentNode.querySelector('.item-selector').checked){        // checks if the item-selector is checked, invokes totalPriceCal funtion if true
+                totalPriceCal();
+            }
         }
     });
 }
@@ -141,14 +137,23 @@ for (let i = 0; i < delItemBtns.length; i++) {
             itemToBuy--;
             event.target.nextElementSibling.innerText = itemToBuy;
             unitPriceCal(event, i, itemToBuy);
+            if (event.target.parentNode.parentNode.querySelector('.item-selector').checked){
+                totalPriceCal();
+            }
         }
     });
 }
 
+document.addEventListener('change', function(event) {                                 // a event listener to checkbox on every item to check if the item is selected or not
+    if (event.target.classList.contains('item-selector')) {
+        totalPriceCal();
+    }
+});
+
 
 // a function to calculate the total price of added units 
 function unitPriceCal(event, i, itemToBuy) {
-    var unitLinker = bookshop[i];                                                   // links the specefic object in the array
+    var unitLinker = bookshop[i];                                                    // links the specefic object in the array
     var totalUnitFinalPrice = 0;                                                    
     var totalUnitBasePrice = 0;
     var unitFinalPrice = Number(unitLinker.finalPrice);
@@ -159,86 +164,21 @@ function unitPriceCal(event, i, itemToBuy) {
     event.target.parentNode.nextElementSibling.querySelector('.base-price').innerText = totalUnitBasePrice;
 }
  
-
-// function oneMoreItem(event){                                                // A function that increase to number of item on cart by one
-//     var itemToBuy = Number(event.target.previousElementSibling.innerText);
-//         if (itemToBuy < 5) {
-//             itemToBuy++;
-//             event.target.previousElementSibling.innerText = itemToBuy;
-//             unitPriceCal (event, itemToBuy);
-//         }
-// }
-
-// function oneLessItem(event) {                                                       // A function that decreases the number of items on cart by one
-//     var itemToBuy = Number(event.target.nextElementSibling.innerText);
-//     if (itemToBuy >= 2) {
-//         itemToBuy--;
-//         event.target.nextElementSibling.innerText = itemToBuy;
-//         unitPriceCal (event, itemToBuy);
-//     }
-// }
-
-// function unitPriceCal (event, itemToBuy) {
-//     var totalUnitFinalPrice = 0;
-//     var totalUnitBasePrice = 0;
-//     var unitFinalPrice = Number(event.target.parentNode.nextElementSibling.firstElementChild.querySelector('.final-price').innerText);
-//     var unitBasePrice = Number(event.target.parentNode.nextElementSibling.lastElementChild.querySelector('.base-price').innerText);
-//     totalUnitFinalPrice = itemToBuy * unitFinalPrice;
-//     totalUnitBasePrice = itemToBuy * unitBasePrice;
-//     console.log(totalUnitFinalPrice);
-//     console.log(totalUnitBasePrice);
-//     event.target.parentNode.nextElementSibling.firstElementChild.querySelector('.final-price').innerText = totalUnitFinalPrice;
-//     event.target.parentNode.nextElementSibling.lastElementChild.querySelector('.base-price').innerText = totalUnitBasePrice;
-// }
-
-// a function that adds item to the cart whenever add button is clicked, and also calculate and show the total final and total base price of that item
-function addItem (itemOnCart, bookShopIndex) {                      // functionName (elementId, indexPosition)
-    var item = Number(document.getElementById(itemOnCart).innerText);   // convert the text of itemOnCart into number
-    var bookshopItem = bookshop[bookShopIndex];                         // map the object inside array
-    if (item < 5) {                                                     // checks whether number of item on the cart does exceed 5 items
-        item++;
-        document.getElementById(itemOnCart).innerText = item;           // update the value of item on the cart
-        document.getElementById(bookshopItem.finalPriceId).innerText = item * (bookshopItem.finalPrice);    // updates the total final price of the selected item
-        document.getElementById(bookshopItem.basePriceId).innerText = item * (bookshopItem.basePrice);      // updates the total base price of the selected item
-    
-        // for (index=0; index < 5; index++) {                          // an attempt to calculate total price of all the item on the cart, but aborted (requires more analysis)
-        //     itemToCount = bookshop[index];
-        totalPriceCalculation();
-        
-    } else {
-        console.log("Max 5 items can be purchased with this deal.");    // error message to check, will be commented and replaced with a notice
-    }
-    }
-    
-    
-    // a function that deletes item from the cart whenever delete button is clicked, and also calculate and show the total final and total base price of that item
-    function delItem (itemOnCart, bookShopIndex) {                      // all are nearly simillar to the addItem function
-    var item = Number(document.getElementById(itemOnCart).innerText);
-    var bookshopItem = bookshop[bookShopIndex];
-    if (item >= 2) {                                                    // to check that minimum 1 items remains on the cart
-        item--;
-        document.getElementById(itemOnCart).innerText = item;
-        document.getElementById(bookshopItem.finalPriceId).innerText = item * (bookshopItem.finalPrice);
-        document.getElementById(bookshopItem.basePriceId).innerText = item * (bookshopItem.basePrice);
-        totalPriceCalculation();
-    } else {
-        console.log("You have to purchase minimum 1 item.");
-    }
-    }
-
-    function totalPriceCalculation() {
-        var totalPriceFinal = 0;                                        // each time the function is called, set the total final price to zero
-        var totalPriceBase = 0;                                         // each time the function is called, set the total base price to zero
-        // a for loop that counts the total final price and total base price each time a copy of item is added to the cart
-        for (var index = 0; index < bookshop.length; index++) {
-            totalPriceFinal = totalPriceFinal + Number(document.getElementById(`final-price-${index}`).innerText);
-            totalPriceBase = totalPriceBase + Number(document.getElementById(`base-price-${index}`).innerText);
+// a function to calculate the total price of all the selected items of the items on cart
+function totalPriceCal() {
+    var totalPriceF = 0;
+    var totalPriceB = 0;
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            totalPriceF = totalPriceF + Number(checkboxes[i].parentNode.parentNode.querySelector('.final-price').innerText);
+            totalPriceB = totalPriceB + Number(checkboxes[i].parentNode.parentNode.querySelector('.base-price').innerText);
         }
-        document.getElementById("purchase-total-final").innerText = totalPriceFinal +" Tk.";
-        document.getElementById("purchase-total-base").innerText = totalPriceBase +" Tk.";
-        document.getElementById("subtotal").innerText = totalPriceFinal +" Tk.";
-        document.getElementById("online-fee").innerText = (totalPriceFinal * 0.02) +" Tk.";
-        document.getElementById("total").innerText = Number(document.getElementById("subtotal").innerText.slice(0, -4)) + Number(document.getElementById("online-fee").innerText.slice(0, -4)) +" Tk.";
-        document.getElementById("payable-total").innerText = document.getElementById("total").innerText;
     }
-    
+    subtotalFinal.innerText = `${totalPriceF} Tk.`;
+    subtotalBase.innerText = `${totalPriceB} Tk.`;
+    subTotal.innerText = `${totalPriceF} Tk.`;
+    onlineFee.innerText = `${Math.round(totalPriceF * 0.03)} Tk.`;
+    total.innerText = `${Math.round(totalPriceF + (totalPriceF * 0.03))} Tk.`;
+    payableTotal.innerText = `${Math.round(totalPriceF + (totalPriceF * 0.03))} Tk.`;
+
+}
