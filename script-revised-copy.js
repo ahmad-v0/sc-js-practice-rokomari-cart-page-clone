@@ -75,14 +75,14 @@ var bookshop = [
 var bookList = document.querySelector('.book-list');
 
 //an event listener that check the following function should run once the contents loaded
-document.addEventListener("DOMContentLoaded", function() {
+// document.addEventListener("DOMContentLoaded", function() {
+function loadCart (){
     for (i = 0; i < bookshop.length; i++) {
-        bookshopItem = bookshop[i];
+        var bookshopItem = bookshop[i];
         loadItems(bookshopItem);
-        console.log('test');
     }
-    console.log('test');
-});
+// });
+}
 
 // a function to inject items on itemlist as per array, fetched from database
 function loadItems(item) {
@@ -107,7 +107,7 @@ function loadItems(item) {
                                 </div>
                             </div>
                             <div class="list-item-btns w-30">
-                                <button type="button" class="delet-item p-1rem fs-1-25rem">&minus;</button>
+                                <button type="button" class="del-item p-1rem fs-1-25rem">&minus;</button>
                                 <span class="item-on-cart p-1rem fs-1-25rem" id="item-on-cart${i}">1</span>
                                 <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
                             </div>
@@ -118,22 +118,78 @@ function loadItems(item) {
     bookList.appendChild(itemToLoad);
 }
 
-var addItemBtns = document.querySelectorAll('.add-item')
-for (i = 0; i < addItemBtns.length; i++) {
+loadCart();                                                                         // all the items are loaded as per array, dynamically
+
+var addItemBtns = document.querySelectorAll('.add-item');                           // returns nodelist of all add-item btns
+var delItemBtns = document.querySelectorAll('.del-item');                           // returns nodelist of all del-item btns
+
+for (let i = 0; i < addItemBtns.length; i++) {
     addItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
-        var itemToBuy = Number(event.target.closest('.item-on-cart').innerText)     // targets the value of the colsest item-on-cart class    
-        if (itemToBuy > 5) {                                                        // checks if there is already 5 copies of that item on cart    
-            itemToBuy++;
-            event.target.closest('.item-on-cart').innerText = itemToBuy;
-            console.log("te4st");
+        var itemToBuy = Number(event.target.previousElementSibling.innerText);       // targets the value of the colsest item-on-cart class 
+        if (itemToBuy < 5) {                                                         // checks if there is already 5 copies of that item on cart    
+            itemToBuy++;                                                             // increase the number of item by one
+            event.target.previousElementSibling.innerText = itemToBuy;               // show the number of item
+            unitPriceCal(event, i, itemToBuy);                                       // calculate total price of added units of that item
         }
-    })
+    });
+}
+
+for (let i = 0; i < delItemBtns.length; i++) {
+    delItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
+        var itemToBuy = Number(event.target.nextElementSibling.innerText);           // targets the value of the colsest item-on-cart class 
+        if (itemToBuy >= 2) {                                                        // ensure atleast 1 copies of that item on cart    
+            itemToBuy--;
+            event.target.nextElementSibling.innerText = itemToBuy;
+            unitPriceCal(event, i, itemToBuy);
+        }
+    });
+}
+
+
+// a function to calculate the total price of added units 
+function unitPriceCal(event, i, itemToBuy) {
+    var unitLinker = bookshop[i];                                                   // links the specefic object in the array
+    var totalUnitFinalPrice = 0;                                                    
+    var totalUnitBasePrice = 0;
+    var unitFinalPrice = Number(unitLinker.finalPrice);
+    var unitBasePrice = Number(unitLinker.basePrice);
+    totalUnitFinalPrice = itemToBuy * unitFinalPrice;
+    totalUnitBasePrice = itemToBuy * unitBasePrice;
+    event.target.parentNode.nextElementSibling.querySelector('.final-price').innerText = totalUnitFinalPrice;
+    event.target.parentNode.nextElementSibling.querySelector('.base-price').innerText = totalUnitBasePrice;
 }
  
 
-function oneMoreItem (){                                                // A function that increase to number of item on cart by one
+// function oneMoreItem(event){                                                // A function that increase to number of item on cart by one
+//     var itemToBuy = Number(event.target.previousElementSibling.innerText);
+//         if (itemToBuy < 5) {
+//             itemToBuy++;
+//             event.target.previousElementSibling.innerText = itemToBuy;
+//             unitPriceCal (event, itemToBuy);
+//         }
+// }
 
-}
+// function oneLessItem(event) {                                                       // A function that decreases the number of items on cart by one
+//     var itemToBuy = Number(event.target.nextElementSibling.innerText);
+//     if (itemToBuy >= 2) {
+//         itemToBuy--;
+//         event.target.nextElementSibling.innerText = itemToBuy;
+//         unitPriceCal (event, itemToBuy);
+//     }
+// }
+
+// function unitPriceCal (event, itemToBuy) {
+//     var totalUnitFinalPrice = 0;
+//     var totalUnitBasePrice = 0;
+//     var unitFinalPrice = Number(event.target.parentNode.nextElementSibling.firstElementChild.querySelector('.final-price').innerText);
+//     var unitBasePrice = Number(event.target.parentNode.nextElementSibling.lastElementChild.querySelector('.base-price').innerText);
+//     totalUnitFinalPrice = itemToBuy * unitFinalPrice;
+//     totalUnitBasePrice = itemToBuy * unitBasePrice;
+//     console.log(totalUnitFinalPrice);
+//     console.log(totalUnitBasePrice);
+//     event.target.parentNode.nextElementSibling.firstElementChild.querySelector('.final-price').innerText = totalUnitFinalPrice;
+//     event.target.parentNode.nextElementSibling.lastElementChild.querySelector('.base-price').innerText = totalUnitBasePrice;
+// }
 
 // a function that adds item to the cart whenever add button is clicked, and also calculate and show the total final and total base price of that item
 function addItem (itemOnCart, bookShopIndex) {                      // functionName (elementId, indexPosition)
