@@ -106,7 +106,8 @@ function loadItems(item) {
 
 loadCart();                                                                         // all the items are loaded as per array, dynamically
 
-var allItemSelector = document.querySelector('.all-selector');
+var allItemSelector = document.querySelector('.all-selector');                      // targets the all-selector button of the page
+var allItemDiscard = document.querySelectorAll('.item-discard');                    // returns nodelist of all item-discard icons
 var addItemBtns = document.querySelectorAll('.add-item');                           // returns nodelist of all add-item btns
 var delItemBtns = document.querySelectorAll('.del-item');                           // returns nodelist of all del-item btns
 var checkboxes = document.querySelectorAll('.item-selector');                       // returns nodelist of all checkboxes for items on cart
@@ -117,12 +118,18 @@ var onlineFee = document.querySelector('#online-fee');
 var total = document.querySelector('#total');
 var payableTotal = document.querySelector('#payable-total');
 
+allItemSelector.checked = false;                                                    // unchecked the all-selector checkbox
+
 allItemSelector.addEventListener('change', function(event) {                        // a event listener to all item selector
     if (event.target.checked) {                                                     // if the all item selector is checked, turns all the individual item selector status into checked
+        var selectedItems = 0;
         for (let i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = true;
-            totalPriceCal();
-            document.querySelector('#total-selected-items').innerText = checkboxes.length;      // shows the number of items selected
+            if (!checkboxes[i].classList.contains('removed')){
+                checkboxes[i].checked = true;
+                selectedItems++;
+                totalPriceCal();
+                document.querySelector('#total-selected-items').innerText = selectedItems;      // shows the number of items selected
+            }
         }
     }
     if (!event.target.checked) {                                                     // if the all item selector is unchecked, turns all the individual item selector status into unchecked
@@ -133,6 +140,16 @@ allItemSelector.addEventListener('change', function(event) {                    
         }
     }
 });
+
+for (let i = 0; i < allItemDiscard.length; i++) {                                     // loops the nodelist of item-discard icons
+    allItemDiscard[i].addEventListener('click', function(event) {                     // add eventlistener to every icon of the nodelist  
+    var itemToDiscard = event.target.parentNode.parentNode.parentNode;                // target the ultimate parent element for that item
+    event.target.parentNode.parentNode.querySelector('.item-selector').checked = false;         // unchecked the items for correct calculation of total price
+    event.target.parentNode.parentNode.querySelector('.item-selector').classList.add('removed');
+    itemToDiscard.remove();                                                           // remove the item from the cart, thus from the list
+    totalPriceCal();                                                                  // calculates the total price again
+    });
+}
 
 for (let i = 0; i < addItemBtns.length; i++) {
     addItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button

@@ -146,6 +146,7 @@ body {
 .fw-m {
     font-weight: 500;
 }
+
 /* properties for purchase section  */
 .sec-purchase  {
     width: 90rem;
@@ -157,15 +158,21 @@ body {
 .selection-total {
     background-color: #FFF;
 }
-
-
+/* 
+.selection-total,
+.summery-pannel {
+    top: 3rem;
+    position: sticky;
+} */
 /* properties for booklist section  */
 .book-list {
     background-color: #FFFAF4;
 }
 
 /* properties for list item  */
-
+.item-discard:hover {
+    cursor: pointer;
+}
 
 /* properties for summery section */
 .summery-pannel {
