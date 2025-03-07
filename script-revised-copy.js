@@ -4,7 +4,7 @@ var bookshop = [
         source: "./assets/sepiens.jpg",
         bookTitle : "Sepiens - A Brief History of Humankind ",
         authorName: "Yuval Noah Harari",
-        copiesAvailable: 8,
+        copiesAvailable: 3,
         finalPrice: 80,
         basePrice: 100
     },
@@ -20,7 +20,7 @@ var bookshop = [
         source: "./assets/the-shinning.jpg",
         bookTitle : "The Shinning",
         authorName: "Stephen King",
-        copiesAvailable: 8,
+        copiesAvailable: 4,
         finalPrice: 180,
         basePrice: 200
     },
@@ -28,7 +28,7 @@ var bookshop = [
         source: "./assets/1984.jpg",
         bookTitle : "1984",
         authorName: "George Orwell",
-        copiesAvailable: 12,
+        copiesAvailable: 2,
         finalPrice: 230,
         basePrice: 250
     },
@@ -136,10 +136,13 @@ allItemSelector.addEventListener('change', function(event) {                    
 
 for (let i = 0; i < addItemBtns.length; i++) {
     addItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
-        var itemToBuy = Number(event.target.previousElementSibling.innerText);       // targets the value of the colsest item-on-cart class 
-        if (itemToBuy < 5) {                                                         // checks if there is already 5 copies of that item on cart    
+        var itemToBuy = Number(event.target.previousElementSibling.innerText);       // targets the value of the closest item-on-cart class
+        var availableCopies = Number(event.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
+        if (itemToBuy < 5 && availableCopies > 0 ) {                                                         // checks if there is already 5 copies of that item on cart    
             itemToBuy++;                                                             // increase the number of item by one
+            availableCopies--;                                                       // decrease the number of copies available by one   
             event.target.previousElementSibling.innerText = itemToBuy;               // show the number of item
+            event.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;           // shows the number of copies remaining to purchase
             unitPriceCal(event, i, itemToBuy);                                       // calculate total price of added units of that item
             if (event.target.parentNode.parentNode.querySelector('.item-selector').checked){        // checks if the item-selector is checked, invokes totalPriceCal funtion if true
                 totalPriceCal();
@@ -150,10 +153,13 @@ for (let i = 0; i < addItemBtns.length; i++) {
 
 for (let i = 0; i < delItemBtns.length; i++) {
     delItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
-        var itemToBuy = Number(event.target.nextElementSibling.innerText);           // targets the value of the colsest item-on-cart class 
+        var itemToBuy = Number(event.target.nextElementSibling.innerText);           // targets the value of the closest item-on-cart class
+        var availableCopies = Number(event.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase 
         if (itemToBuy >= 2) {                                                        // ensure atleast 1 copies of that item on cart    
             itemToBuy--;
+            availableCopies++;                                                       // increse the number of copies available by one
             event.target.nextElementSibling.innerText = itemToBuy;
+            event.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;           // shows the number of copies remaining to purchase
             unitPriceCal(event, i, itemToBuy);
             if (event.target.parentNode.parentNode.querySelector('.item-selector').checked){
                 totalPriceCal();
