@@ -106,6 +106,7 @@ function loadItems(item) {
 
 loadCart();                                                                         // all the items are loaded as per array, dynamically
 
+var allItemSelector = document.querySelector('.all-selector');
 var addItemBtns = document.querySelectorAll('.add-item');                           // returns nodelist of all add-item btns
 var delItemBtns = document.querySelectorAll('.del-item');                           // returns nodelist of all del-item btns
 var checkboxes = document.querySelectorAll('.item-selector');                       // returns nodelist of all checkboxes for items on cart
@@ -115,6 +116,23 @@ var subTotal = document.querySelector('#subtotal');
 var onlineFee = document.querySelector('#online-fee');
 var total = document.querySelector('#total');
 var payableTotal = document.querySelector('#payable-total');
+
+allItemSelector.addEventListener('change', function(event) {                        // a event listener to all item selector
+    if (event.target.checked) {                                                     // if the all item selector is checked, turns all the individual item selector status into checked
+        for (let i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = true;
+            totalPriceCal();
+            document.querySelector('#total-selected-items').innerText = checkboxes.length;      // shows the number of items selected
+        }
+    }
+    if (!event.target.checked) {                                                     // if the all item selector is unchecked, turns all the individual item selector status into unchecked
+        for (let i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = false;
+            totalPriceCal();
+            document.querySelector('#total-selected-items').innerText = 0;                      // shows the number of items selected
+        }
+    }
+});
 
 for (let i = 0; i < addItemBtns.length; i++) {
     addItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
@@ -168,12 +186,16 @@ function unitPriceCal(event, i, itemToBuy) {
 function totalPriceCal() {
     var totalPriceF = 0;
     var totalPriceB = 0;
+    var totalItemsSelected = 0;
     for (let i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
             totalPriceF = totalPriceF + Number(checkboxes[i].parentNode.parentNode.querySelector('.final-price').innerText);
             totalPriceB = totalPriceB + Number(checkboxes[i].parentNode.parentNode.querySelector('.base-price').innerText);
+            totalItemsSelected++;
         }
     }
+
+    document.querySelector('#total-selected-items').innerText = totalItemsSelected;      // shows the number of items selected
     subtotalFinal.innerText = `${totalPriceF} Tk.`;
     subtotalBase.innerText = `${totalPriceB} Tk.`;
     subTotal.innerText = `${totalPriceF} Tk.`;
