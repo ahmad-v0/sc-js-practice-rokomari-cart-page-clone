@@ -154,9 +154,33 @@ body {
     margin: 3rem auto;
 }
 
+/* properties for buttons  */
+.btn-close {
+    background-color: #FFF3CD;
+    border: none;
+}
+
+/* properties for svg icons  */
+
+
+.svg-icon path {
+    fill: #1F1F1F;
+    transition: fill 0.3 ease;
+}
+
+.svg-icon:hover path {
+    fill: red;
+    cursor: pointer;
+}
+
 /* properties for selection panel */
 .selection-total {
     background-color: #FFF;
+}
+
+/* properties for warning panel */
+.warning-panel {
+    background-color: #FFF3CD;
 }
 /* 
 .selection-total,

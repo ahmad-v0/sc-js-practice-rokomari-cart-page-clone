@@ -86,11 +86,7 @@ function loadItems(item) {
                                     <p class="item-author fs-1-125rem" id="item-author${i}">
                                     ${item.authorName}
                                     </p>
-                                    <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" 
-                                    fill="#1f1f1f"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 
-                                    33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 
-                                    0h80v-360h-80v360ZM280-720v520-520Z"/>
-                                    </svg>
+                                    <img src="./assets/trash-solid.svg" alt="Remove from Cart" class="item-discard w-1rem">
                                     <p class="copies-available color-red">
                                         Only <span class="copies-available-number" id="copies-availabe${i}">${item.copiesAvailable}</span> copies available
                                     </p>
