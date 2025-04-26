@@ -161,16 +161,14 @@ body {
 }
 
 /* properties for svg icons  */
-
-
-.svg-icon path {
-    fill: #1F1F1F;
-    transition: fill 0.3 ease;
+.svg-icon {
+    transition: filter 0.3s ease;
+    cursor: pointer;
+    height: 1.5rem;
 }
 
-.svg-icon:hover path {
-    fill: red;
-    cursor: pointer;
+.svg-icon:hover {
+    filter: invert(42%) sepia(57%) saturate(3691%) hue-rotate(333deg) brightness(111%) contrast(105%);
 }
 
 /* properties for selection panel */

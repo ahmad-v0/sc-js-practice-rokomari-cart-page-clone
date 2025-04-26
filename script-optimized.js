@@ -79,14 +79,14 @@ function loadItems(item) {
                                 <div class="item-img w-5rem">
                                     <img src="${item.source}" alt="${item.bookTitle}" class="w-100" id="item-source${i}">
                                 </div>
-                                <div class="item-txt d-flex flex-column space-between">
+                                <div class="item-txt d-flex flex-column space-between align-start">
                                     <p class="item-title fs-1-25rem" id="item-title${i}">
                                     ${item.bookTitle}
                                     </p>
                                     <p class="item-author fs-1-125rem" id="item-author${i}">
                                     ${item.authorName}
                                     </p>
-                                    <img src="./assets/trash-solid.svg" alt="Remove from Cart" class="item-discard w-1rem">
+                                    <img src="./assets/icon-trash.svg" alt="trash" class="svg-icon">
                                     <p class="copies-available color-red">
                                         Only <span class="copies-available-number" id="copies-availabe${i}">${item.copiesAvailable}</span> copies available
                                     </p>
