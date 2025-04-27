@@ -93,9 +93,9 @@ let loadItems = (items) => {                                                    
                                 </div>
                                 </div>
                                 <div class="list-item-btns w-30">
-                                    <button type="button" class="del-item p-1rem fs-1-25rem">&minus;</button>
+                                    <button type="button" class="del-item p-1rem fs-1-25rem" id="delItem${index}">&minus;</button>
                                     <span class="item-on-cart p-1rem fs-1-25rem" id="item-on-cart${index}">1</span>
-                                    <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
+                                    <button type="button" class="add-item p-1rem fs-1-25rem" id="addItem${index}">&plus;</button>
                                 </div>
                                 <div class="list-item-price w-10">
                                     <p><span class="final-price fs-1-25rem" id="final-price${index}">${elem.finalPrice}</span> Tk.</p>
@@ -116,6 +116,7 @@ let addItem = (e) => {                                                          
         availableCopies--;                                                          // reduce the number of copies by one
         e.target.previousElementSibling.innerText = iOnCart;                        // update the number of items on cart
         e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;       // updates the number of copies available
+        itemPriceCal(e, iOnCart);                                                   // update total final price and base price of the added items
     }
 }
 
@@ -127,11 +128,27 @@ let delItem = (e) => {                                                          
         availableCopies++;                                                          // increase the number of copies available
         e.target.nextElementSibling.innerText = iOnCart;                            // update the number of items on cart
         e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;       // updates the number of copies available
+        itemPriceCal(e, iOnCart);                                                   // update total final price and base price of the added items
     }
 }
 
+let itemPriceCal = (e, n) => {                                                      // a function to calculate to the total final price and total base price of added items on cart, using the event and number of item as variable
+    let item = itemOnDbase[e.target.id.slice(-1)];                                  // collects the index number of the item as per event target to track final price and base price form database
+    let itemFp = item.finalPrice;                                                   // takes the items final price
+    let itemBp = item.basePrice;                                                    // takes the items base price
+    let itemTfp = e.target.parentNode.nextElementSibling.firstElementChild.firstElementChild;                           // targets the element to show the total final price
+    let itemTbp = e.target.parentNode.nextElementSibling.lastElementChild.firstElementChild.firstElementChild;          // targets the element to show the total base price
+    itemTfp.innerText = itemFp * n;                                                 // updates the total final price
+    itemTbp.innerText = itemBp * n;                                                 // updates the total base price
+}
+
 bookList.addEventListener('click', (e) => {                                         // add event listner to booklist to check for click events
-    console.dir(e.target);
+    // console.dir(e.target);
+    // console.dir(bookList);
+    // console.dir(e.target.parentNode.nextElementSibling);
+    // console.log(e.target.id.slice(-1));
+    // console.log(itemOnDbase[e.target.id.slice(-1)].finalPrice);
+    // console.log(e.target.parentNode.nextElementSibling.lastElementChild.firstElementChild.firstElementChild.innerText);
     if(e.target.classList.contains("add-item")) {                                   // check for click events on add-item btns
         addItem(e);                                                                 // increase the number of that item on cart
     };
