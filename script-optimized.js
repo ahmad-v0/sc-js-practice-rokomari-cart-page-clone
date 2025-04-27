@@ -1,5 +1,5 @@
 // databse of books stored as object in a array
-var bookshop = [
+const itemOnDbase = [
     {
         source: "./assets/sepiens.jpg",
         bookTitle : "Sepiens - A Brief History of Humankind ",
@@ -57,8 +57,90 @@ var bookshop = [
         basePrice: 100
     }
 ]
-// console.log("This is an automatically generated message");
-var bookList = document.querySelector('.book-list');
+
+let allItemSelector = document.querySelector('.all-selector');                      // targets the all-selector button of the page
+let allSelCount = document.querySelector('#total-selected-items');                  // a variable to show the number of selected items
+let basePriceTotal = document.querySelector('#purchase-total-base');                // a variable to show the total base price of selected items
+let finalPriceTotal = document.querySelector('#purchase-total-final');              // a variable to show the total final price of selected items
+let warningClose = document.querySelector('#warning-close');                        // a variable to access the close button of warning pannel
+let bookList = document.querySelector('.book-list');                                // a variable for booklist database
+let subTotal = document.querySelector('#subtotal');                                 // a variable to show the subtotal of selected items
+let onlineFee = document.querySelector('#online-fee');                              // a variable to show the online fee incurred on subtotal
+let total = document.querySelector('#total');                                       // a variable to show the total price
+let payableTotal = document.querySelector('#payable-total');                        // a variable to show the payable total
+
+let loadItems = (items) => {                                                        // a function to load all the items from the database
+    items.forEach((elem, index) => {
+        let itemHolder = document.createElement('div');                             
+        itemHolder.className = "list-item p-1rem border-bottom-solid d-flex space-between align-center";
+        itemHolder.innerHTML = `
+                                <div class="list-item-details w-60 d-flex gap-1rem">
+                                <input type="checkbox" name="item-selector" class="item-selector" id="item-selector${index}">
+                                <div class="item-img w-5rem">
+                                    <img src="${elem.source}" alt="${elem.bookTitle}" class="w-100" id="item-source${index}">
+                                </div>
+                                <div class="item-txt d-flex flex-column space-between align-start">
+                                    <p class="item-title fs-1-25rem" id="item-title${index}">
+                                    ${elem.bookTitle}
+                                    </p>
+                                    <p class="item-author fs-1-125rem" id="item-author${index}">
+                                    ${elem.authorName}
+                                    </p>
+                                    <img src="./assets/icon-trash.svg" alt="trash" class="svg-icon">
+                                    <p class="copies-available color-red">
+                                        Only <span class="copies-available-number" id="copies-availabe${index}">${elem.copiesAvailable}</span> copies available
+                                    </p>
+                                </div>
+                                </div>
+                                <div class="list-item-btns w-30">
+                                    <button type="button" class="del-item p-1rem fs-1-25rem">&minus;</button>
+                                    <span class="item-on-cart p-1rem fs-1-25rem" id="item-on-cart${index}">1</span>
+                                    <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
+                                </div>
+                                <div class="list-item-price w-10">
+                                    <p><span class="final-price fs-1-25rem" id="final-price${index}">${elem.finalPrice}</span> Tk.</p>
+                                    <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price${index}">${elem.basePrice}</span> Tk.</s></p>
+                                </div>
+            `;
+        bookList.appendChild(itemHolder);
+    });
+}
+
+loadItems(itemOnDbase);
+
+let addItem = (e) => {                                                              // a function when invoked, adds items on the cart
+    let iOnCart = Number(e.target.previousElementSibling.innerText);                // takes the current number of items on cart
+    let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
+    if (iOnCart < 5 && availableCopies > 0) {                                       // ensure maximum 5 items on cart, if any product remains availabel
+        iOnCart++;                                                                  // adds one more item on the cart
+        availableCopies--;                                                          // reduce the number of copies by one
+        e.target.previousElementSibling.innerText = iOnCart;                        // update the number of items on cart
+        e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;       // updates the number of copies available
+    }
+}
+
+let delItem = (e) => {                                                              //  a function when invoked, deletes an item from the cart
+    let iOnCart = Number(e.target.nextElementSibling.innerText);                    // takes the current number of items on cart
+    let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
+    if (iOnCart >= 2) {
+        iOnCart--;                                                                  // deletes one item from the cart
+        availableCopies++;                                                          // increase the number of copies available
+        e.target.nextElementSibling.innerText = iOnCart;                            // update the number of items on cart
+        e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;       // updates the number of copies available
+    }
+}
+
+bookList.addEventListener('click', (e) => {                                         // add event listner to booklist to check for click events
+    console.dir(e.target);
+    if(e.target.classList.contains("add-item")) {                                   // check for click events on add-item btns
+        addItem(e);                                                                 // increase the number of that item on cart
+    };
+    if (e.target.classList.contains("del-item")) {                                  // checks for click events on del-item btns
+        delItem(e);                                                                 // reduce the number of items on cart
+    }
+});
+
+/*
 
 //an event listener that check the following function should run once the contents loaded
 // document.addEventListener("DOMContentLoaded", function() {
@@ -73,40 +155,13 @@ function loadCart (){
 // a function to inject items on itemlist as per array, fetched from database
 function loadItems(item) {
     var itemToLoad = document.createElement('div');
-    itemToLoad.className = "list-item p-1rem border-bottom-solid d-flex space-between align-center";
-    itemToLoad.innerHTML = `<div class="list-item-details w-60 d-flex gap-1rem">
-                                <input type="checkbox" name="item-selector" class="item-selector" id="item-selector${i}">
-                                <div class="item-img w-5rem">
-                                    <img src="${item.source}" alt="${item.bookTitle}" class="w-100" id="item-source${i}">
-                                </div>
-                                <div class="item-txt d-flex flex-column space-between align-start">
-                                    <p class="item-title fs-1-25rem" id="item-title${i}">
-                                    ${item.bookTitle}
-                                    </p>
-                                    <p class="item-author fs-1-125rem" id="item-author${i}">
-                                    ${item.authorName}
-                                    </p>
-                                    <img src="./assets/icon-trash.svg" alt="trash" class="svg-icon">
-                                    <p class="copies-available color-red">
-                                        Only <span class="copies-available-number" id="copies-availabe${i}">${item.copiesAvailable}</span> copies available
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="list-item-btns w-30">
-                                <button type="button" class="del-item p-1rem fs-1-25rem">&minus;</button>
-                                <span class="item-on-cart p-1rem fs-1-25rem" id="item-on-cart${i}">1</span>
-                                <button type="button" class="add-item p-1rem fs-1-25rem">&plus;</button>
-                            </div>
-                            <div class="list-item-price w-10">
-                                <p><span class="final-price fs-1-25rem" id="final-price${i}">${item.finalPrice}</span> Tk.</p>
-                                <p><s class="color-red"><span class="base-price fs-1-125rem" id="base-price${i}">${item.basePrice}</span> Tk.</s></p>
-                            </div>`;
+    itemToLoad.className = 
+    itemToLoad.innerHTML = ``;
     bookList.appendChild(itemToLoad);
 }
 
 loadCart();                                                                         // all the items are loaded as per array, dynamically
 
-var allItemSelector = document.querySelector('.all-selector');                      // targets the all-selector button of the page
 var allItemDiscard = document.querySelectorAll('.item-discard');                    // returns nodelist of all item-discard icons
 var addItemBtns = document.querySelectorAll('.add-item');                           // returns nodelist of all add-item btns
 var delItemBtns = document.querySelectorAll('.del-item');                           // returns nodelist of all del-item btns
@@ -152,6 +207,8 @@ for (let i = 0; i < allItemDiscard.length; i++) {                               
     });
 }
 
+*/
+
 
 // for (let i = 0; i < allItemDiscard.length; i++) {                                     // loops the nodelist of item-discard icons
 //     allItemDiscard[i].addEventListener('click', function(event) {                     // add eventlistener to every icon of the nodelist
@@ -166,11 +223,11 @@ for (let i = 0; i < allItemDiscard.length; i++) {                               
 //     });
 // }
 
-
+/*
 for (let i = 0; i < addItemBtns.length; i++) {
     addItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
         var itemToBuy = Number(event.target.previousElementSibling.innerText);       // targets the value of the closest item-on-cart class
-        var availableCopies = Number(event.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
+        
         if (itemToBuy < 5 && availableCopies > 0 ) {                                                         // checks if there is already 5 copies of that item on cart    
             itemToBuy++;                                                             // increase the number of item by one
             availableCopies--;                                                       // decrease the number of copies available by one   
@@ -243,3 +300,4 @@ function totalPriceCal() {
     payableTotal.innerText = `${Math.round(totalPriceF + (totalPriceF * 0.03))} Tk.`;
 
 }
+*/
