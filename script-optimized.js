@@ -64,6 +64,10 @@ let basePriceTotal = document.querySelector('#purchase-total-base');            
 let finalPriceTotal = document.querySelector('#purchase-total-final');              // a variable to show the total final price of selected items
 let warningClose = document.querySelector('#warning-close');                        // a variable to access the close button of warning pannel
 let bookList = document.querySelector('.book-list');                                // a variable for booklist database
+let selectAll = document.querySelector('.all-selector');                            // a variable for the checkbox to select all items on the list
+let selItemTotal = document.querySelector('#total-selected-items');                // a variable to show the number of selected items
+let baseSubtotal = document.querySelector('#base-subtotal');                        // a variable to show the total of all items base price
+let finalSubtotal = document.querySelector('#final-subtotal');                      // a variable to show the total of all items final price
 let subTotal = document.querySelector('#subtotal');                                 // a variable to show the subtotal of selected items
 let onlineFee = document.querySelector('#online-fee');                              // a variable to show the online fee incurred on subtotal
 let total = document.querySelector('#total');                                       // a variable to show the total price
@@ -108,6 +112,8 @@ let loadItems = (items) => {                                                    
 
 loadItems(itemOnDbase);
 
+let itemSelectors = bookList.querySelectorAll('.item-selector');                    // returns all the checkbox input available on booklist
+
 let addItem = (e) => {                                                              // a function when invoked, adds items on the cart
     let iOnCart = Number(e.target.previousElementSibling.innerText);                // takes the current number of items on cart
     let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
@@ -142,6 +148,24 @@ let itemPriceCal = (e, n) => {                                                  
     itemTbp.innerText = itemBp * n;                                                 // updates the total base price
 }
 
+let subtotalCal = () => {                                                       // a function to calculate the total base price and total final price of all selected items
+    let baseTotal = 0;
+    let finalTotal = 0;
+    let count = 0;
+    itemSelectors.forEach((e) => {
+        if (e.checked) {
+            count++;
+            let totalB = Number(e.parentNode.parentNode.querySelector('.base-price').innerText);
+            let totalF = Number(e.parentNode.parentNode.querySelector('.final-price').innerText);
+            baseTotal = baseTotal + totalB;
+            finalTotal = finalTotal + totalF;
+        }
+    });
+    selItemTotal.innerText = count;
+    baseSubtotal.innerText = baseTotal;
+    finalSubtotal.innerText = finalTotal;
+}   
+
 bookList.addEventListener('click', (e) => {                                         // add event listner to booklist to check for click events
     // console.dir(e.target);
     // console.dir(bookList);
@@ -151,11 +175,21 @@ bookList.addEventListener('click', (e) => {                                     
     // console.log(e.target.parentNode.nextElementSibling.lastElementChild.firstElementChild.firstElementChild.innerText);
     if(e.target.classList.contains("add-item")) {                                   // check for click events on add-item btns
         addItem(e);                                                                 // increase the number of that item on cart
+        subtotalCal();
     };
     if (e.target.classList.contains("del-item")) {                                  // checks for click events on del-item btns
         delItem(e);                                                                 // reduce the number of items on cart
-    }
+        subtotalCal();
+    };
+
+    // console.log(bookList.querySelectorAll('.item-selector'));
 });
+
+itemSelectors.forEach((item) => item.addEventListener('change', () => {
+    // console.dir(item.parentNode);
+    // console.dir(baseSubtotal);
+    subtotalCal();
+}))
 
 /*
 
