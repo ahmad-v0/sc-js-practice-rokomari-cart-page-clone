@@ -111,6 +111,7 @@ let loadItems = (items) => {                                                    
 }
 
 loadItems(itemOnDbase);
+allItemSelector.checked = false;
 
 let itemSelectors = bookList.querySelectorAll('.item-selector');                    // returns all the checkbox input available on booklist
 
@@ -164,15 +165,13 @@ let subtotalCal = () => {                                                       
     selItemTotal.innerText = count;
     baseSubtotal.innerText = baseTotal;
     finalSubtotal.innerText = finalTotal;
+    subTotal.innerText = finalTotal;
+    onlineFee.innerText = Math.round(finalTotal * 0.025);
+    total.innerText = finalTotal + Math.round(finalTotal * 0.025);
+    payableTotal.innerText = finalTotal + Math.round(finalTotal * 0.025);
 }   
 
 bookList.addEventListener('click', (e) => {                                         // add event listner to booklist to check for click events
-    // console.dir(e.target);
-    // console.dir(bookList);
-    // console.dir(e.target.parentNode.nextElementSibling);
-    // console.log(e.target.id.slice(-1));
-    // console.log(itemOnDbase[e.target.id.slice(-1)].finalPrice);
-    // console.log(e.target.parentNode.nextElementSibling.lastElementChild.firstElementChild.firstElementChild.innerText);
     if(e.target.classList.contains("add-item")) {                                   // check for click events on add-item btns
         addItem(e);                                                                 // increase the number of that item on cart
         subtotalCal();
@@ -181,15 +180,24 @@ bookList.addEventListener('click', (e) => {                                     
         delItem(e);                                                                 // reduce the number of items on cart
         subtotalCal();
     };
-
-    // console.log(bookList.querySelectorAll('.item-selector'));
 });
 
-itemSelectors.forEach((item) => item.addEventListener('change', () => {
-    // console.dir(item.parentNode);
-    // console.dir(baseSubtotal);
+itemSelectors.forEach((item) => item.addEventListener('change', (e) => {
+    if (!e.target.checked) allItemSelector.checked = false;
     subtotalCal();
 }))
+
+allItemSelector.addEventListener('change', (e) => {
+    if (e.target.checked) {
+        itemSelectors.forEach((e) => e.checked = true);
+        
+    };
+    if (!e.target.checked) {
+        itemSelectors.forEach((e) => e.checked = false);
+        
+    };
+    subtotalCal();
+})
 
 /*
 
