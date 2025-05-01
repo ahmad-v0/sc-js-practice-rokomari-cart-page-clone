@@ -115,7 +115,7 @@ allItemSelector.checked = false;
 
 let itemSelectors = bookList.querySelectorAll('.item-selector');                    // returns all the checkbox input available on booklist
 
-let addItem = (e) => {                                                              // a function when invoked, adds items on the cart
+let addItem = e => {                                                              // a function when invoked, adds items on the cart
     let iOnCart = Number(e.target.previousElementSibling.innerText);                // takes the current number of items on cart
     let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
     if (iOnCart < 5 && availableCopies > 0) {                                       // ensure maximum 5 items on cart, if any product remains availabel
@@ -127,7 +127,7 @@ let addItem = (e) => {                                                          
     }
 }
 
-let delItem = (e) => {                                                              //  a function when invoked, deletes an item from the cart
+let delItem = e => {                                                              //  a function when invoked, deletes an item from the cart
     let iOnCart = Number(e.target.nextElementSibling.innerText);                    // takes the current number of items on cart
     let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
     if (iOnCart >= 2) {
@@ -162,16 +162,16 @@ let subtotalCal = () => {                                                       
             finalTotal = finalTotal + totalF;
         }
     });
-    selItemTotal.innerText = count;
-    baseSubtotal.innerText = baseTotal;
-    finalSubtotal.innerText = finalTotal;
-    subTotal.innerText = finalTotal;
-    onlineFee.innerText = Math.round(finalTotal * 0.025);
-    total.innerText = finalTotal + Math.round(finalTotal * 0.025);
-    payableTotal.innerText = finalTotal + Math.round(finalTotal * 0.025);
+    selItemTotal.innerText = `${count}`;
+    baseSubtotal.innerText = `${baseTotal} Tk.`;
+    finalSubtotal.innerText = `${finalTotal} Tk.`;
+    subTotal.innerText = `${finalTotal} Tk.`;
+    onlineFee.innerText = `${Math.round(finalTotal * 0.025)} Tk.`;
+    total.innerText = `${finalTotal + Math.round(finalTotal * 0.025)} Tk.`;
+    payableTotal.innerText = `${finalTotal + Math.round(finalTotal * 0.025)} Tk.`;
 }   
 
-bookList.addEventListener('click', (e) => {                                         // add event listner to booklist to check for click events
+bookList.addEventListener('click', e => {                                         // add event listner to booklist to check for click events
     if(e.target.classList.contains("add-item")) {                                   // check for click events on add-item btns
         addItem(e);                                                                 // increase the number of that item on cart
         subtotalCal();
@@ -182,12 +182,13 @@ bookList.addEventListener('click', (e) => {                                     
     };
 });
 
-itemSelectors.forEach((item) => item.addEventListener('change', (e) => {
+itemSelectors.forEach((item) => item.addEventListener('change', e => {
+    if (Array.from(itemSelectors).every(e => e.checked)) allItemSelector.checked = true; 
     if (!e.target.checked) allItemSelector.checked = false;
     subtotalCal();
 }))
 
-allItemSelector.addEventListener('change', (e) => {
+allItemSelector.addEventListener('change', e => {
     if (e.target.checked) {
         itemSelectors.forEach((e) => e.checked = true);
         
