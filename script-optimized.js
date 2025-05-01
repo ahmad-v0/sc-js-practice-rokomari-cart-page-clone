@@ -65,7 +65,7 @@ let finalPriceTotal = document.querySelector('#purchase-total-final');          
 let warningClose = document.querySelector('#warning-close');                        // a variable to access the close button of warning pannel
 let bookList = document.querySelector('.book-list');                                // a variable for booklist database
 let selectAll = document.querySelector('.all-selector');                            // a variable for the checkbox to select all items on the list
-let selItemTotal = document.querySelector('#total-selected-items');                // a variable to show the number of selected items
+let selItemTotal = document.querySelector('#total-selected-items');                 // a variable to show the number of selected items
 let baseSubtotal = document.querySelector('#base-subtotal');                        // a variable to show the total of all items base price
 let finalSubtotal = document.querySelector('#final-subtotal');                      // a variable to show the total of all items final price
 let subTotal = document.querySelector('#subtotal');                                 // a variable to show the subtotal of selected items
@@ -90,7 +90,7 @@ let loadItems = (items) => {                                                    
                                     <p class="item-author fs-1-125rem" id="item-author${index}">
                                     ${elem.authorName}
                                     </p>
-                                    <img src="./assets/icon-trash.svg" alt="trash" class="svg-icon">
+                                    <img src="./assets/icon-trash.svg" alt="trash" class="svg-icon item-bin">
                                     <p class="copies-available color-red">
                                         Only <span class="copies-available-number" id="copies-availabe${index}">${elem.copiesAvailable}</span> copies available
                                     </p>
@@ -111,11 +111,23 @@ let loadItems = (items) => {                                                    
 }
 
 loadItems(itemOnDbase);
-allItemSelector.checked = false;
+allItemSelector.checked = false;                                                    // uncheck the all item selector
 
 let itemSelectors = bookList.querySelectorAll('.item-selector');                    // returns all the checkbox input available on booklist
+let moveToBin = bookList.querySelectorAll('.item-bin');                             // return all the trash icons from the list
 
-let addItem = e => {                                                              // a function when invoked, adds items on the cart
+moveToBin.forEach(i => {                                                            
+    i.addEventListener('click', e => {                                              // eventlistener added to the all trash icons
+        let itemToMove = e.target.parentNode.parentNode.parentNode;                 // a variable to select the target item
+        let itemCheck = e.target.parentNode.parentNode.firstElementChild;           // a variable to select the checkbox of target item
+        itemCheck.checked = false;                                                  // uncheck the target item
+        itemToMove.classList.add('trashed');                                        // a class added to the target item to distinguish it from the others
+        itemToMove.remove();                                                        // removes the target item from the list
+        subtotalCal();                                                              // calculates the total price of existing items
+    })
+})
+
+let addItem = e => {                                                                // a function when invoked, adds items on the cart
     let iOnCart = Number(e.target.previousElementSibling.innerText);                // takes the current number of items on cart
     let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
     if (iOnCart < 5 && availableCopies > 0) {                                       // ensure maximum 5 items on cart, if any product remains availabel
@@ -127,7 +139,7 @@ let addItem = e => {                                                            
     }
 }
 
-let delItem = e => {                                                              //  a function when invoked, deletes an item from the cart
+let delItem = e => {                                                                //  a function when invoked, deletes an item from the cart
     let iOnCart = Number(e.target.nextElementSibling.innerText);                    // takes the current number of items on cart
     let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
     if (iOnCart >= 2) {
@@ -149,7 +161,7 @@ let itemPriceCal = (e, n) => {                                                  
     itemTbp.innerText = itemBp * n;                                                 // updates the total base price
 }
 
-let subtotalCal = () => {                                                       // a function to calculate the total base price and total final price of all selected items
+let subtotalCal = () => {                                                           // a function to calculate the total base price and total final price of all selected items
     let baseTotal = 0;
     let finalTotal = 0;
     let count = 0;
@@ -171,7 +183,7 @@ let subtotalCal = () => {                                                       
     payableTotal.innerText = `${finalTotal + Math.round(finalTotal * 0.025)} Tk.`;
 }   
 
-bookList.addEventListener('click', e => {                                         // add event listner to booklist to check for click events
+bookList.addEventListener('click', e => {                                           // add event listner to booklist to check for click events
     if(e.target.classList.contains("add-item")) {                                   // check for click events on add-item btns
         addItem(e);                                                                 // increase the number of that item on cart
         subtotalCal();
@@ -182,22 +194,23 @@ bookList.addEventListener('click', e => {                                       
     };
 });
 
-itemSelectors.forEach((item) => item.addEventListener('change', e => {
-    if (Array.from(itemSelectors).every(e => e.checked)) allItemSelector.checked = true; 
-    if (!e.target.checked) allItemSelector.checked = false;
+itemSelectors.forEach((item) => item.addEventListener('change', e => {              // eventlistener for each checkbox for every items on the list
+    if (Array.from(itemSelectors).every(e => e.checked)) allItemSelector.checked = true;        // checks of checkboxes for every item is checked; turn on the all item selector checkbox if true
+    if (!e.target.checked) allItemSelector.checked = false;                         // turn off the all item selector if an item is unchecked
     subtotalCal();
 }))
 
-allItemSelector.addEventListener('change', e => {
-    if (e.target.checked) {
-        itemSelectors.forEach((e) => e.checked = true);
-        
+allItemSelector.addEventListener('change', e => {                                   // event listener to all item selector checkbox to check for changes
+    if (e.target.checked) {         
+        itemSelectors.forEach(i => {                                    
+            if (!i.parentNode.parentNode.classList.contains('trashed')) i.checked = true;       // if turned on, turns on the checkboxes for item that is on the list, not moved to trash
+        });
     };
     if (!e.target.checked) {
-        itemSelectors.forEach((e) => e.checked = false);
+        itemSelectors.forEach(e => e.checked = false);                              // if uncheckd, turns off the checkboxes for all item
         
     };
-    subtotalCal();
+    subtotalCal();                                                                  // calculates the total price of existing items on the list
 })
 
 /*
