@@ -97,9 +97,10 @@ let loadItems = (items) => {                                                    
                                 </div>
                                 </div>
                                 <div class="list-item-btns w-30">
-                                    <button type="button" class="del-item p-1rem fs-1-25rem" id="delItem${index}">&minus;</button>
+                                    <button type="button" class="del-item p-1rem fs-1-25rem p-relative" id="delItem${index}" warning-text = "Please enter a value greater than or equal to 1">&minus;</button>
                                     <span class="item-on-cart p-1rem fs-1-25rem" id="item-on-cart${index}">1</span>
-                                    <button type="button" class="add-item p-1rem fs-1-25rem" id="addItem${index}">&plus;</button>
+                                    <button type="button" class="add-item p-1rem fs-1-25rem p-relative" id="addItem${index}" warning-text ="You can purchase maximum ${elem.copiesAvailable} of this item"
+                                    >&plus;</button>
                                 </div>
                                 <div class="list-item-price w-10">
                                     <p><span class="final-price fs-1-25rem" id="final-price${index}">${elem.finalPrice}</span> Tk.</p>
@@ -183,12 +184,26 @@ let subtotalCal = () => {                                                       
     payableTotal.innerText = `${finalTotal + Math.round(finalTotal * 0.025)} Tk.`;
 }   
 
+let tooltip = (e) => {
+    let pNode = e.target;
+    let cNode = document.createElement('div');
+    cNode.className = "tooltip p-absolute fs-1rem p-1rem";
+    cNode.innerHTML = e.target.getAttribute("warning-text");
+    pNode.appendChild(cNode);
+    let tooltipRemove = () => {
+        cNode.remove();
+    }
+    setTimeout(tooltipRemove, 3000);
+}
+
 bookList.addEventListener('click', e => {                                           // add event listner to booklist to check for click events
     if(e.target.classList.contains("add-item")) {                                   // check for click events on add-item btns
+        tooltip(e);
         addItem(e);                                                                 // increase the number of that item on cart
         subtotalCal();
     };
     if (e.target.classList.contains("del-item")) {                                  // checks for click events on del-item btns
+        tooltip(e);
         delItem(e);                                                                 // reduce the number of items on cart
         subtotalCal();
     };
