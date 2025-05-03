@@ -129,14 +129,19 @@ moveToBin.forEach(i => {
 })
 
 let addItem = e => {                                                                // a function when invoked, adds items on the cart
+    let i = e.target.id.slice(-1);                                                  // identify the index value of the item on the database
+    let maxQty = itemOnDbase[i].copiesAvailable;                                    // takes the value of copies available of the target product
     let iOnCart = Number(e.target.previousElementSibling.innerText);                // takes the current number of items on cart
     let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
-    if (iOnCart < 5 && availableCopies > 0) {                                       // ensure maximum 5 items on cart, if any product remains availabel
+    if (iOnCart <= maxQty && availableCopies > 0) {                                 // ensure maximum quantity of items on cart, if any product remains available
         iOnCart++;                                                                  // adds one more item on the cart
         availableCopies--;                                                          // reduce the number of copies by one
         e.target.previousElementSibling.innerText = iOnCart;                        // update the number of items on cart
-        e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;       // updates the number of copies available
+        e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;           // updates the number of copies available
         itemPriceCal(e, iOnCart);                                                   // update total final price and base price of the added items
+    }
+    if (iOnCart > maxQty) {
+        tooltip(e);                                                                 // shows warning if the number of item on cart exceeds the number of copies available
     }
 }
 
@@ -147,8 +152,11 @@ let delItem = e => {                                                            
         iOnCart--;                                                                  // deletes one item from the cart
         availableCopies++;                                                          // increase the number of copies available
         e.target.nextElementSibling.innerText = iOnCart;                            // update the number of items on cart
-        e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;       // updates the number of copies available
+        e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;            // updates the number of copies available
         itemPriceCal(e, iOnCart);                                                   // update total final price and base price of the added items
+    }
+    if (iOnCart == 1) {                                                         
+        tooltip(e);                                                                 // ensure atleast one product placed on the cart
     }
 }
 
@@ -156,8 +164,8 @@ let itemPriceCal = (e, n) => {                                                  
     let item = itemOnDbase[e.target.id.slice(-1)];                                  // collects the index number of the item as per event target to track final price and base price form database
     let itemFp = item.finalPrice;                                                   // takes the items final price
     let itemBp = item.basePrice;                                                    // takes the items base price
-    let itemTfp = e.target.parentNode.nextElementSibling.firstElementChild.firstElementChild;                           // targets the element to show the total final price
-    let itemTbp = e.target.parentNode.nextElementSibling.lastElementChild.firstElementChild.firstElementChild;          // targets the element to show the total base price
+    let itemTfp = e.target.parentNode.nextElementSibling.firstElementChild.firstElementChild;                                       // targets the element to show the total final price
+    let itemTbp = e.target.parentNode.nextElementSibling.lastElementChild.firstElementChild.firstElementChild;                      // targets the element to show the total base price
     itemTfp.innerText = itemFp * n;                                                 // updates the total final price
     itemTbp.innerText = itemBp * n;                                                 // updates the total base price
 }
@@ -184,26 +192,24 @@ let subtotalCal = () => {                                                       
     payableTotal.innerText = `${finalTotal + Math.round(finalTotal * 0.025)} Tk.`;
 }   
 
-let tooltip = (e) => {
-    let pNode = e.target;
-    let cNode = document.createElement('div');
-    cNode.className = "tooltip p-absolute fs-1rem p-1rem";
-    cNode.innerHTML = e.target.getAttribute("warning-text");
-    pNode.appendChild(cNode);
-    let tooltipRemove = () => {
+let tooltip = (e) => {                                                              // a function to show tooltip when required
+    let pNode = e.target;                                                           // targets the parent node for the tooltip to show
+    let cNode = document.createElement('div');                                      // create a blank div
+    cNode.className = "tooltip p-absolute fs-1rem p-1rem";                          // add class to the newly created div
+    cNode.innerHTML = e.target.getAttribute("warning-text");                        // get the warning text from the target node's attribute
+    pNode.appendChild(cNode);                                                       // append the div to the parent node
+    let tooltipRemove = () => {                                                     // a function to remove the tooltip
         cNode.remove();
     }
-    setTimeout(tooltipRemove, 3000);
+    setTimeout(tooltipRemove, 3000);                                                // set timeout function to remove the tooltip after 3s
 }
 
 bookList.addEventListener('click', e => {                                           // add event listner to booklist to check for click events
     if(e.target.classList.contains("add-item")) {                                   // check for click events on add-item btns
-        tooltip(e);
         addItem(e);                                                                 // increase the number of that item on cart
         subtotalCal();
     };
     if (e.target.classList.contains("del-item")) {                                  // checks for click events on del-item btns
-        tooltip(e);
         delItem(e);                                                                 // reduce the number of items on cart
         subtotalCal();
     };
