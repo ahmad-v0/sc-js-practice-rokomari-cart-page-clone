@@ -264,6 +264,8 @@ bookList.addEventListener('click', e => {                                       
 });
 
 itemSelectors.forEach((item) => item.addEventListener('change', e => {              // eventlistener for each checkbox for every items on the list
+    if (Array.from(itemSelectors).some(e=> e.checked)) warningHide();               // if atleast one item is selected, makes the warning panel to hide
+    if(Array.from(itemSelectors).every(e=> !e.checked)) warningShow();              // if every item on the list is unchecked, make the warning panel to show
     if (Array.from(itemSelectors).every(e => e.checked)) allItemSelector.checked = true;        // checks of checkboxes for every item is checked; turn on the all item selector checkbox if true
     if (!e.target.checked) allItemSelector.checked = false;                         // turn off the all item selector if an item is unchecked
     subtotalCal();
