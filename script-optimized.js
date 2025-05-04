@@ -58,10 +58,12 @@ const itemOnDbase = [
     }
 ]
 
+let selectionPanel = document.querySelector(".selection-panel");                    // a variable to target the selection panel
 let allItemSelector = document.querySelector('.all-selector');                      // targets the all-selector button of the page
 let allSelCount = document.querySelector('#total-selected-items');                  // a variable to show the number of selected items
 let basePriceTotal = document.querySelector('#purchase-total-base');                // a variable to show the total base price of selected items
 let finalPriceTotal = document.querySelector('#purchase-total-final');              // a variable to show the total final price of selected items
+let warningPanel = document.querySelector('.warning-panel');                        // a variable to control the warning panel
 let warningClose = document.querySelector('#warning-close');                        // a variable to access the close button of warning pannel
 let bookList = document.querySelector('.book-list');                                // a variable for booklist database
 let selectAll = document.querySelector('.all-selector');                            // a variable for the checkbox to select all items on the list
@@ -113,9 +115,55 @@ let loadItems = (items) => {                                                    
 
 loadItems(itemOnDbase);
 allItemSelector.checked = false;                                                    // uncheck the all item selector
+warningShow();                                                                      // shows the warning panel
 
 let itemSelectors = bookList.querySelectorAll('.item-selector');                    // returns all the checkbox input available on booklist
 let moveToBin = bookList.querySelectorAll('.item-bin');                             // return all the trash icons from the list
+
+// let closure = (e) => {
+//     if (e.propertyName === 'height') {
+//         warningPanel.style.display = "none";
+//         warningPanel.removeEventListener('transitionend', closure);
+//     }
+// }
+
+function closure(e) {                                                               // a function to check if the transition event completed 
+    if (e.propertyName === 'height') {                                              // checks if the event to cause transition is height, beacuse it is longer than other
+        warningPanel.style.display = "none";                                        // hides the display
+        warningPanel.removeEventListener('transitionend', closure);                 // removes the event listener from warning panel, for smooth functioning
+    }
+}
+
+// let warningShow = () => {
+//     warningPanel.removeEventListener('transitionend', closure);
+//     warningPanel.children[0].children[1].textContent = 'Please select at least 1 product';
+//     warningPanel.style.display = "flex";
+//     warningPanel.offsetHeight;
+//     warningPanel.style.height = "3rem";
+//     warningPanel.style.padding = "1rem";
+//     warningPanel.style.marginBottom = "1rem";
+    
+// }
+
+function warningShow() {                                                            // a function to show notify the user to select atleast one product
+    warningPanel.removeEventListener('transitionend', closure);                     // removes if any previous transitionend event present
+    warningPanel.children[0].children[1].textContent = 'Please select at least 1 product';          // set the innerText of the target element
+    warningPanel.style.display = "flex";                                            // make the warning panel visible
+    warningPanel.offsetHeight;                                                      // checks for layout recalculation, before transition to take place,
+                                                                                    // if not invoked, the element present itself hidden to visible in a abrupt way, no gradual appearance
+    warningPanel.style.height = "3rem";                                             // set the height of the warning panel
+    warningPanel.style.padding = "1rem";                                            // set the padding of the warning panel
+    warningPanel.style.marginBottom = "1rem";                                       // set the bottom margin of the warning panel
+}
+
+let warningHide =()=> {                                                             // a function to hide the warning panel when invoked
+    warningPanel.children[0].children[1].textContent = '';                          // removes the textContent of the target element for smooth transition
+    warningPanel.style.height = "0";                                                // set the elements height
+    warningPanel.style.padding = "0";                                               // sets the elements padding
+    warningPanel.addEventListener('transitionend', closure);                        // an eventlistener to the warning panel, which checks if the transition event completed
+                                                                                    // once the event is completed, it will call the closure function
+                                                                                    // that is why the closure function is declared as reference, where closure() invokes the function immeadiately
+}
 
 moveToBin.forEach(i => {                                                            
     i.addEventListener('click', e => {                                              // eventlistener added to the all trash icons
@@ -222,176 +270,17 @@ itemSelectors.forEach((item) => item.addEventListener('change', e => {          
 }))
 
 allItemSelector.addEventListener('change', e => {                                   // event listener to all item selector checkbox to check for changes
-    if (e.target.checked) {         
+    if (e.target.checked) {     
+        warningHide();    
         itemSelectors.forEach(i => {                                    
             if (!i.parentNode.parentNode.classList.contains('trashed')) i.checked = true;       // if turned on, turns on the checkboxes for item that is on the list, not moved to trash
         });
     };
     if (!e.target.checked) {
         itemSelectors.forEach(e => e.checked = false);                              // if uncheckd, turns off the checkboxes for all item
-        
+        warningShow();
     };
     subtotalCal();                                                                  // calculates the total price of existing items on the list
 })
 
-/*
-
-//an event listener that check the following function should run once the contents loaded
-// document.addEventListener("DOMContentLoaded", function() {
-function loadCart (){
-    for (i = 0; i < bookshop.length; i++) {
-        var bookshopItem = bookshop[i];
-        loadItems(bookshopItem);
-    }
-// });
-}
-
-// a function to inject items on itemlist as per array, fetched from database
-function loadItems(item) {
-    var itemToLoad = document.createElement('div');
-    itemToLoad.className = 
-    itemToLoad.innerHTML = ``;
-    bookList.appendChild(itemToLoad);
-}
-
-loadCart();                                                                         // all the items are loaded as per array, dynamically
-
-var allItemDiscard = document.querySelectorAll('.item-discard');                    // returns nodelist of all item-discard icons
-var addItemBtns = document.querySelectorAll('.add-item');                           // returns nodelist of all add-item btns
-var delItemBtns = document.querySelectorAll('.del-item');                           // returns nodelist of all del-item btns
-var checkboxes = document.querySelectorAll('.item-selector');                       // returns nodelist of all checkboxes for items on cart
-var subtotalFinal = document.querySelector('#purchase-total-final');
-var subtotalBase = document.querySelector('#purchase-total-base');
-var subTotal = document.querySelector('#subtotal');
-var onlineFee = document.querySelector('#online-fee');
-var total = document.querySelector('#total');
-var payableTotal = document.querySelector('#payable-total');
-
-allItemSelector.checked = false;                                                    // unchecked the all-selector checkbox
-
-allItemSelector.addEventListener('change', function(event) {                        // a event listener to all item selector
-    if (event.target.checked) {                                                     // if the all item selector is checked, turns all the individual item selector status into checked
-        var selectedItems = 0;
-        for (let i = 0; i < checkboxes.length; i++) {
-            if (!checkboxes[i].classList.contains('removed')){
-                checkboxes[i].checked = true;
-                selectedItems++;
-                totalPriceCal();
-                document.querySelector('#total-selected-items').innerText = selectedItems;      // shows the number of items selected
-            }
-        }
-    }
-    if (!event.target.checked) {                                                     // if the all item selector is unchecked, turns all the individual item selector status into unchecked
-        for (let i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = false;
-            totalPriceCal();
-            document.querySelector('#total-selected-items').innerText = 0;                      // shows the number of items selected
-        }
-    }
-});
-
-
-for (let i = 0; i < allItemDiscard.length; i++) {                                     // loops the nodelist of item-discard icons
-    allItemDiscard[i].addEventListener('click', function(event) {                     // add eventlistener to every icon of the nodelist  
-    var itemToDiscard = event.target.parentNode.parentNode.parentNode;                // target the ultimate parent element for that item
-    event.target.parentNode.parentNode.querySelector('.item-selector').checked = false;         // unchecked the items for correct calculation of total price
-    event.target.parentNode.parentNode.querySelector('.item-selector').classList.add('removed');
-    itemToDiscard.remove();                                                           // remove the item from the cart, thus from the list
-    totalPriceCal();                                                                  // calculates the total price again
-    });
-}
-
-*/
-
-
-// for (let i = 0; i < allItemDiscard.length; i++) {                                     // loops the nodelist of item-discard icons
-//     allItemDiscard[i].addEventListener('click', function(event) {                     // add eventlistener to every icon of the nodelist
-//         bookshop[i].remove();
-//     /*  
-//     var itemToDiscard = event.target.parentNode.parentNode.parentNode;                // target the ultimate parent element for that item
-//     event.target.parentNode.parentNode.querySelector('.item-selector').checked = false;         // unchecked the items for correct calculation of total price
-//     event.target.parentNode.parentNode.querySelector('.item-selector').classList.add('removed');
-//     itemToDiscard.remove();                                                           // remove the item from the cart, thus from the list
-//     */
-//     totalPriceCal();                                                                  // calculates the total price again
-//     });
-// }
-
-/*
-for (let i = 0; i < addItemBtns.length; i++) {
-    addItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
-        var itemToBuy = Number(event.target.previousElementSibling.innerText);       // targets the value of the closest item-on-cart class
-        
-        if (itemToBuy < 5 && availableCopies > 0 ) {                                                         // checks if there is already 5 copies of that item on cart    
-            itemToBuy++;                                                             // increase the number of item by one
-            availableCopies--;                                                       // decrease the number of copies available by one   
-            event.target.previousElementSibling.innerText = itemToBuy;               // show the number of item
-            event.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;           // shows the number of copies remaining to purchase
-            unitPriceCal(event, i, itemToBuy);                                       // calculate total price of added units of that item
-            if (event.target.parentNode.parentNode.querySelector('.item-selector').checked){        // checks if the item-selector is checked, invokes totalPriceCal funtion if true
-                totalPriceCal();
-            }
-        }
-    });
-}
-
-for (let i = 0; i < delItemBtns.length; i++) {
-    delItemBtns[i].addEventListener('click', function(event){                        // An event listener to check for click event on add-item button
-        var itemToBuy = Number(event.target.nextElementSibling.innerText);           // targets the value of the closest item-on-cart class
-        var availableCopies = Number(event.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase 
-        if (itemToBuy >= 2) {                                                        // ensure atleast 1 copies of that item on cart    
-            itemToBuy--;
-            availableCopies++;                                                       // increse the number of copies available by one
-            event.target.nextElementSibling.innerText = itemToBuy;
-            event.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;           // shows the number of copies remaining to purchase
-            unitPriceCal(event, i, itemToBuy);
-            if (event.target.parentNode.parentNode.querySelector('.item-selector').checked){
-                totalPriceCal();
-            }
-        }
-    });
-}
-
-document.addEventListener('change', function(event) {                                 // a event listener to checkbox on every item to check if the item is selected or not
-    if (event.target.classList.contains('item-selector')) {
-        totalPriceCal();
-    }
-});
-
-
-// a function to calculate the total price of added units 
-function unitPriceCal(event, i, itemToBuy) {
-    var unitLinker = bookshop[i];                                                    // links the specefic object in the array
-    var totalUnitFinalPrice = 0;                                                    
-    var totalUnitBasePrice = 0;
-    var unitFinalPrice = Number(unitLinker.finalPrice);
-    var unitBasePrice = Number(unitLinker.basePrice);
-    totalUnitFinalPrice = itemToBuy * unitFinalPrice;
-    totalUnitBasePrice = itemToBuy * unitBasePrice;
-    event.target.parentNode.nextElementSibling.querySelector('.final-price').innerText = totalUnitFinalPrice;
-    event.target.parentNode.nextElementSibling.querySelector('.base-price').innerText = totalUnitBasePrice;
-}
- 
-// a function to calculate the total price of all the selected items of the items on cart
-function totalPriceCal() {
-    var totalPriceF = 0;
-    var totalPriceB = 0;
-    var totalItemsSelected = 0;
-    for (let i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            totalPriceF = totalPriceF + Number(checkboxes[i].parentNode.parentNode.querySelector('.final-price').innerText);
-            totalPriceB = totalPriceB + Number(checkboxes[i].parentNode.parentNode.querySelector('.base-price').innerText);
-            totalItemsSelected++;
-        }
-    }
-
-    document.querySelector('#total-selected-items').innerText = totalItemsSelected;      // shows the number of items selected
-    subtotalFinal.innerText = `${totalPriceF} Tk.`;
-    subtotalBase.innerText = `${totalPriceB} Tk.`;
-    subTotal.innerText = `${totalPriceF} Tk.`;
-    onlineFee.innerText = `${Math.round(totalPriceF * 0.03)} Tk.`;
-    total.innerText = `${Math.round(totalPriceF + (totalPriceF * 0.03))} Tk.`;
-    payableTotal.innerText = `${Math.round(totalPriceF + (totalPriceF * 0.03))} Tk.`;
-
-}
-*/
+warningClose.addEventListener('click', ()=> warningHide());

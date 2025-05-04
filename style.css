@@ -215,7 +215,14 @@ body {
 /* properties for warning panel */
 .warning-panel {
     background-color: #FFF3CD;
+    overflow: hidden;
+    height: 0;
+    padding: 0;
+    margin-bottom: 0;
+    /* display: none; */
+    transition: height 0.5s ease, padding 0.5s ease, margin-bottom 0.5s ease;
 }
+
 /* 
 .selection-total,
 .summery-pannel {
