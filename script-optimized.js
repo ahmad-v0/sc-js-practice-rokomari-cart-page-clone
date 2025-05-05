@@ -181,31 +181,26 @@ let addItem = e => {                                                            
     let maxQty = itemOnDbase[i].copiesAvailable;                                    // takes the value of copies available of the target product
     let iOnCart = Number(e.target.previousElementSibling.innerText);                // takes the current number of items on cart
     let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
-    if (iOnCart <= maxQty && availableCopies > 0) {                                 // ensure maximum quantity of items on cart, if any product remains available
+    if (iOnCart < maxQty && availableCopies > 0) {                                 // ensure maximum quantity of items on cart, if any product remains available
         iOnCart++;                                                                  // adds one more item on the cart
         availableCopies--;                                                          // reduce the number of copies by one
         e.target.previousElementSibling.innerText = iOnCart;                        // update the number of items on cart
         e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;           // updates the number of copies available
         itemPriceCal(e, iOnCart);                                                   // update total final price and base price of the added items
-    }
-    if (iOnCart > maxQty) {
-        tooltip(e);                                                                 // shows warning if the number of item on cart exceeds the number of copies available
-    }
+    } else tooltip(e);                                                              // shows warning if the number of item on cart exceeds the number of copies available
 }
 
 let delItem = e => {                                                                //  a function when invoked, deletes an item from the cart
     let iOnCart = Number(e.target.nextElementSibling.innerText);                    // takes the current number of items on cart
     let availableCopies = Number(e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText);   // target the number of copies available to purchase
-    if (iOnCart >= 2) {
+    if (iOnCart > 1) {
         iOnCart--;                                                                  // deletes one item from the cart
         availableCopies++;                                                          // increase the number of copies available
         e.target.nextElementSibling.innerText = iOnCart;                            // update the number of items on cart
         e.target.parentNode.previousElementSibling.querySelector('.copies-available-number').innerText = availableCopies;            // updates the number of copies available
         itemPriceCal(e, iOnCart);                                                   // update total final price and base price of the added items
-    }
-    if (iOnCart == 1) {                                                         
-        tooltip(e);                                                                 // ensure atleast one product placed on the cart
-    }
+    } else tooltip(e);                                                              // ensure atleast one product placed on the cart
+
 }
 
 let itemPriceCal = (e, n) => {                                                      // a function to calculate to the total final price and total base price of added items on cart, using the event and number of item as variable
